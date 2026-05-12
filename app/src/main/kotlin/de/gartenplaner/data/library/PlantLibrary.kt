@@ -1,5 +1,6 @@
 package de.gartenplaner.data.library
 
+import de.gartenplaner.data.model.ActivityType
 import de.gartenplaner.data.model.ActivityType.*
 import de.gartenplaner.data.model.MonthEntryTemplate
 import de.gartenplaner.data.model.PlantTemplate

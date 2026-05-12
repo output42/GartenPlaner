@@ -1,6 +1,7 @@
 package de.gartenplaner.data.seed
 
 import de.gartenplaner.data.db.GardenDatabase
+import de.gartenplaner.data.model.ActivityType
 import de.gartenplaner.data.model.ActivityType.*
 import de.gartenplaner.data.model.MonthEntry
 import de.gartenplaner.data.model.Plan
