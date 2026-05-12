@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gartenplaner 2026 – Brandenburg</title>
+<style>
+@page {
+  size: 297mm 210mm;
+  margin: 0;
+}
+
+* {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #d4d4d4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  gap: 14px;
+}
+
+.print-btn {
+  background: #2d7a1f;
+  color: #fff;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.print-btn:hover { background: #1f5814; }
+
+.page {
+  width: min(1100px, 100%);
+  background: #fff;
+  padding: 8mm 7mm 6mm 7mm;
+}
+
+/* HEADER */
+.hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2.5px solid #2d5016;
+  padding-bottom: 4px;
+  margin-bottom: 5px;
+}
+.hdr h1 { font-size: clamp(16px, 2.3vw, 22px); color: #2d5016; font-weight: 800; }
+.hdr p  { font-size: clamp(8px, 0.9vw, 10px); color: #555; margin-top: 2px; }
+.hdr-r  { font-size: clamp(7px, 0.8vw, 9px); color: #666; text-align: right; line-height: 1.6; }
+
+/* LEGEND */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin-bottom: 5px;
+}
+.legend b   { font-size: clamp(7px, 0.8vw, 9px); color: #333; margin-right: 2px; }
+.legend span { font-size: clamp(7px, 0.8vw, 9px); color: #333; display: flex; align-items: center; gap: 3px; }
+.sq { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+.sq-v  { background-color: #f0a500; }
+.sq-d  { background-color: #3a8c3f; }
+.sq-p  { background-color: #2196f3; }
+.sq-e  { background-color: #c0392b; }
+.sq-pg { background-color: #8e44ad; }
+.sq-c  { background-color: #27ae60; }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+col.lc { width: 9.5%; }
+col.mc { width: 7%; }
+
+td, th {
+  border: 0.6px solid #bbb;
+  font-size: clamp(6.5px, 0.76vw, 8px);
+  line-height: 1.25;
+  padding: 2px 3px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+th.mh {
+  background-color: #2d5016;
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(7px, 0.8vw, 8.5px);
+  padding: 3px 2px;
+}
+th.mh small { display: block; font-weight: 400; font-size: 0.8em; opacity: 0.85; }
+
+td.lbl {
+  background-color: #f0f4ec;
+  font-weight: 600;
+  font-size: clamp(6px, 0.72vw, 7.5px);
+  text-align: left;
+  padding: 2px 4px;
+  border-right: 2px solid #a0c090;
+  line-height: 1.3;
+}
+td.lbl em { display: block; font-style: italic; font-weight: 400; color: #777; font-size: 0.87em; }
+
+.sec td {
+  background-color: #deeece;
+  color: #1a4010;
+  font-weight: 700;
+  font-size: clamp(6.5px, 0.76vw, 8px);
+  text-align: left;
+  padding: 2px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-top: 1.5px solid #8fb87a;
+}
+
+/* Activity types */
+.av  { background-color: #fff0c0; color: #7a4f00; }
+.ad  { background-color: #c8ecd0; color: #145220; }
+.ap  { background-color: #c5e0ff; color: #00387a; }
+.ae  { background-color: #fad0d3; color: #6e1219; }
+.apg { background-color: #e8d0f8; color: #3d1060; }
+.ac  { background-color: #b8f0cc; color: #145228; }
+.ac  { border-left: 2px solid #27ae60 !important; }
+.best { font-weight: 700; }
+.sub { display: block; font-size: 0.82em; opacity: 0.72; }
+
+/* FOOTER */
+.footer {
+  margin-top: 5px;
+  border-top: 1.5px solid #ccc;
+  padding-top: 4px;
+  display: flex;
+  gap: 8px;
+}
+.fb { flex: 1; }
+.fb h3 {
+  font-size: clamp(7px, 0.8vw, 9px);
+  color: #2d5016;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 2px;
+}
+.fb p, .fb li {
+  font-size: clamp(6px, 0.72vw, 8px);
+  color: #333;
+  line-height: 1.55;
+}
+.fb ul { padding-left: 10px; }
+
+/* ══ PRINT ══════════════════════════════════════════ */
+@media print {
+  body { background: white !important; padding: 0 !important; display: block !important; }
+  .print-btn { display: none !important; }
+
+  .page {
+    width: 297mm !important;
+    height: 210mm !important;
+    padding: 7mm 6mm 4mm 6mm !important;
+    overflow: hidden !important;
+  }
+
+  .hdr h1 { font-size: 14pt !important; }
+  .hdr p  { font-size: 6.5pt !important; }
+  .hdr-r  { font-size: 6pt !important; }
+  .hdr    { margin-bottom: 3px !important; padding-bottom: 3px !important; }
+
+  .legend { margin-bottom: 3px !important; }
+  .legend span, .legend b { font-size: 5.5pt !important; }
+  .sq { width: 8px !important; height: 8px !important; }
+
+  /* Row heights:
+     210mm page - 7mm top - 4mm bottom = 199mm usable
+     header ≈ 15mm | legend ≈ 7mm | footer ≈ 22mm | gaps ≈ 4mm
+     → table gets: 199 - 15 - 7 - 22 - 4 = ~151mm
+     Header row: 6mm | 3 section rows: 3.5mm each = 10.5mm | 11 data rows: ~12.2mm each
+     → use 12mm for data rows
+  */
+  td, th {
+    font-size: 5.5pt !important;
+    padding: 1px 2px !important;
+    height: 12mm !important;
+    line-height: 1.2 !important;
+  }
+  th.mh { height: 6mm !important; font-size: 6pt !important; padding: 1px 2px !important; }
+  th.mh small { font-size: 5pt !important; }
+  td.lbl { font-size: 5.5pt !important; padding: 1px 3px !important; }
+  td.lbl em { font-size: 4.5pt !important; }
+  .sec td { height: 3.5mm !important; font-size: 5.5pt !important; padding: 1px 4px !important; }
+  .sub { font-size: 4.5pt !important; }
+
+  .footer { margin-top: 3px !important; padding-top: 3px !important; }
+  .fb h3  { font-size: 6pt !important; margin-bottom: 1px !important; }
+  .fb p, .fb li { font-size: 5pt !important; line-height: 1.4 !important; }
+}
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨 Drucken / Als PDF speichern</button>
+
+<div class="page">
+
+  <div class="hdr">
+    <div>
+      <h1>🌱 Gartenplaner 2026 — Brandenburg</h1>
+      <p>Aussaat · Pflege · Ernte · Cannabis-Zucht · Frostkalender</p>
+    </div>
+    <div class="hdr-r">
+      Letzter Frost: ~15. April<br>
+      Erster Frost: ~15. Oktober<br>
+      Klimazone: 7a · Lehmboden
+    </div>
+  </div>
+
+  <div class="legend">
+    <b>Legende:</b>
+    <span><span class="sq sq-v"></span> Voranzucht (innen)</span>
+    <span><span class="sq sq-d"></span> Direktsaat (außen)</span>
+    <span><span class="sq sq-p"></span> Auspflanzen / Setzen</span>
+    <span><span class="sq sq-e"></span> Ernte</span>
+    <span><span class="sq sq-pg"></span> Pflege / Schnitt</span>
+    <span><span class="sq sq-c"></span> Cannabis-Zucht</span>
+  </div>
+
+  <table>
+    <colgroup>
+      <col class="lc">
+      <col class="mc"><col class="mc"><col class="mc"><col class="mc">
+      <col class="mc"><col class="mc"><col class="mc"><col class="mc">
+      <col class="mc"><col class="mc"><col class="mc"><col class="mc">
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="mh">Pflanze</th>
+        <th class="mh">Jan<small>❄</small></th>
+        <th class="mh">Feb<small>❄</small></th>
+        <th class="mh">Mär<small>🌬</small></th>
+        <th class="mh">Apr<small>🌧</small></th>
+        <th class="mh">Mai<small>🌱</small></th>
+        <th class="mh">Jun<small>☀</small></th>
+        <th class="mh">Jul<small>☀</small></th>
+        <th class="mh">Aug<small>☀</small></th>
+        <th class="mh">Sep<small>🍂</small></th>
+        <th class="mh">Okt<small>🍂</small></th>
+        <th class="mh">Nov<small>❄</small></th>
+        <th class="mh">Dez<small>❄</small></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr class="sec"><td colspan="13">🥬 Gemüse &amp; Kräuter</td></tr>
+
+      <tr>
+        <td class="lbl">Tomaten<em>Voranzucht</em></td>
+        <td></td><td></td>
+        <td class="av">Voranz.</td>
+        <td class="av">Voranz.</td>
+        <td class="ap">Auspfl.</td>
+        <td></td>
+        <td class="ae">Ernte</td>
+        <td class="ae best">Ernte ↑</td>
+        <td class="ae">Ernte</td>
+        <td></td><td></td><td></td>
+      </tr>
+
+      <tr>
+        <td class="lbl">Mais<em>Voranzucht ◎</em></td>
+        <td></td><td></td><td></td>
+        <td class="av">Voranz. ◎</td>
+        <td class="ap">Auspfl.</td>
+        <td class="ad">Direktsaat</td>
+        <td></td>
+        <td class="ae">Ernte</td>
+        <td class="ae best">Ernte ↑</td>
+        <td></td><td></td><td></td>
+      </tr>
+
+      <tr>
+        <td class="lbl">Kürbis<em>Direktsaat</em></td>
+        <td></td><td></td><td></td>
+        <td class="av">Voranz.</td>
+        <td class="ap">Auspfl.</td>
+        <td></td><td></td>
+        <td class="ae">Ernte</td>
+        <td class="ae best">Ernte ↑</td>
+        <td class="ae">Lager</td>
+        <td></td><td></td>
+      </tr>
+
+      <tr>
+        <td class="lbl">Bohnen<em>Three Sisters</em></td>
+        <td></td><td></td><td></td><td></td>
+        <td class="ad">Direktsaat</td>
+        <td class="ad">Direktsaat</td>
+        <td class="ae">Ernte</td>
+        <td class="ae best">Ernte ↑</td>
+        <td class="ae">Ernte</td>
+        <td></td><td></td><td></td>
+      </tr>
+
+      <tr>
+        <td class="lbl">Möhren<em>Direktsaat</em></td>
+        <td></td><td></td>
+        <td class="ad">Direktsaat</td>
+        <td class="ad">Direktsaat</td>
+        <td></td><td></td><td></td>
+        <td class="ae">Ernte</td>
+        <td class="ae best">Ernte ↑</td>
+        <td class="ae">Lager</td>
+        <td></td><td></td>
+      </tr>
+
+      <tr>
+        <td class="lbl">Knoblauch<em>Überwinternd</em></td>
+        <td class="apg">Pflege</td>
+        <td class="apg">Pflege</td>
+        <td class="apg">Pflege</td>
+        <td class="apg">Pflege</td>
+        <td class="apg">Pflege</td>
+        <td class="ae best">Ernte ↑</td>
+        <td></td><td></td><td></td>
+        <td class="ad best">Setzen ↑</td>
+        <td class="ad">Setzen</td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td class="lbl">Zucchini<em>Direktsaat</em></td>
+        <td></td><td></td><td></td>
+        <td class="av">Voranz.</td>
+        <td class="ap">Auspfl.</td>
+        <td class="ae">Ernte</td>
+        <td class="ae best">Ernte ↑</td>
+        <td class="ae">Ernte</td>
+        <td class="ae">Ernte</td>
+        <td></td><td></td><td></td>
+      </tr>
+
+      <tr class="sec"><td colspan="13">🌿 Cannabis-Zucht 2026 (F1 × Auto-Projekt)</td></tr>
+
+      <tr>
+        <td class="lbl">F1 Cross<em>Dr.Tau × Russ.Fuel</em></td>
+        <td></td><td></td><td></td>
+        <td class="ac best">✓ Aussaat<span class="sub">7. April</span></td>
+        <td class="ac best">Wachstum</td>
+        <td class="ac">Blüte beginnt</td>
+        <td class="ac best">Blüte ↑<span class="sub">Lichtdep. ≈5.6</span></td>
+        <td class="ac">Reife</td>
+        <td class="ac">Ernte / Pollen</td>
+        <td></td><td></td><td></td>
+      </tr>
+
+      <tr>
+        <td class="lbl">Durban Poison Auto<em>Humboldt, fem.</em></td>
+        <td></td><td></td><td></td><td></td>
+        <td class="ac best">Aussaat<span class="sub">~28. April</span></td>
+        <td class="ac">Wachstum</td>
+        <td class="ac">Autoblüte</td>
+        <td class="ac best">Bestäubt &amp; Reife</td>
+        <td class="ac">F1-Samen Reife</td>
+        <td class="ac">Ernte F1-Samen</td>
+        <td></td><td></td>
+      </tr>
+
+      <tr class="sec"><td colspan="13">🎋 Dauerprojekte &amp; Pflege</td></tr>
+
+      <tr>
+        <td class="lbl">Bambus<em>Ph. atrovaginata</em></td>
+        <td></td><td></td>
+        <td class="apg">Rhizomkontrolle</td>
+        <td class="apg">Rhizomkontrolle</td>
+        <td class="apg best">Neue Halme ↑</td>
+        <td class="apg">Wachstum</td>
+        <td class="apg">Wachstum</td>
+        <td></td><td></td>
+        <td class="apg">Herbstdüngung</td>
+        <td></td><td></td>
+      </tr>
+
+      <tr>
+        <td class="lbl">Kompost<em>Trockentrennklo</em></td>
+        <td class="apg">Wenden</td>
+        <td class="apg">Kontrolle</td>
+        <td class="apg">Sieben</td>
+        <td class="ap">Ausbringen</td>
+        <td></td><td></td><td></td><td></td>
+        <td class="ap">Ausbringen</td>
+        <td class="apg">Neue Charge</td>
+        <td></td><td></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <div class="fb">
+      <h3>🌡 Frostdaten Brandenburg (Eberswalde)</h3>
+      <p>
+        Letzter Spätfrost: ca. 15. April<br>
+        Eisheiligen: 11.–15. Mai → extra Vorsicht!<br>
+        Erster Herbstfrost: ca. 15. Oktober<br>
+        Frostfreie Periode: ~183 Tage<br>
+        ◎ = Voranzucht empfohlen (Kaltfrühling)
+      </p>
+    </div>
+    <div class="fb">
+      <h3>📌 Prioritäten Mai–Juli 2026</h3>
+      <ul>
+        <li>Mais nach Frost auspflanzen (ab ~15. Mai)</li>
+        <li>Bohnen für Three Sisters ab Mitte Mai</li>
+        <li>F1: Astdunkelung 2 Wo. vor Sonnenwende (≈ 5. Juni)</li>
+        <li>Durban Auto: Bestäubung im Juli planen</li>
+        <li>Bambus-Rhizomsperre kontrollieren</li>
+        <li>Knoblauch ernten sobald Blätter vergilben</li>
+      </ul>
+    </div>
+    <div class="fb">
+      <h3>📦 Vorräte (Ziel: 90 Tage)</h3>
+      <ul>
+        <li>Reis: □ ausreichend &nbsp; □ aufstocken</li>
+        <li>Linsen: □ ausreichend &nbsp; □ aufstocken</li>
+        <li>Hafer: □ ausreichend &nbsp; □ aufstocken</li>
+        <li>Olivenöl: □ ausreichend &nbsp; □ aufstocken</li>
+        <li>Nächste Bestellung: _______________</li>
+        <li>Stand: _________________________</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GartenPlaner — Mockups v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-400: #5cb85c;
+  --green-500: #3d9e3d;
+  --green-600: #2d7a2d;
+  --green-700: #1f5c1f;
+  --amber:     #e09a00;
+  --amber-bg:  #fff3c0;
+  --blue:      #3a8fd4;
+  --blue-bg:   #daeeff;
+  --red:       #d44a4a;
+  --red-bg:    #fde0e0;
+  --purple:    #8a5cd0;
+  --purple-bg: #ede0fb;
+  /* Light surfaces */
+  --l-bg:      #f2f4f0;
+  --l-surface: #ffffff;
+  --l-surface2:#f7f8f5;
+  --l-border:  #e0e4dc;
+  --l-text:    #111a11;
+  --l-text2:   #4a5c4a;
+  --l-text3:   #8a9a8a;
+  --l-bar:     #2a6a2a;
+  --l-inactive:#c8d4c4;
+  /* Dark surfaces — neutral dark, barely tinted */
+  --d-bg:      #111111;
+  --d-surface: #1e1e1e;
+  --d-surface2:#252525;
+  --d-border:  #2e2e2e;
+  --d-text:    #f0f0f0;
+  --d-text2:   #a0a0a0;
+  --d-text3:   #606060;
+  --d-bar:     #181818;
+  --d-inactive:#2a2a2a;
+  --d-accent:  #6dcc6d;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0d0d0d;
+  padding: 40px 20px 80px;
+}
+
+.page-header { text-align:center; margin-bottom:48px; }
+.page-header h1 { font-size:28px; font-weight:900; color:#fff; }
+.page-header h1 span { color: var(--green-400); }
+.page-header p { color:#555; font-size:13px; margin-top:6px; }
+
+.section-title {
+  font-size:11px; font-weight:800; color:#444;
+  text-transform:uppercase; letter-spacing:1.5px;
+  text-align:center; margin: 48px 0 24px;
+}
+
+.phones-row {
+  display:flex; gap:40px; justify-content:center;
+  flex-wrap:wrap; align-items:flex-start;
+}
+.phone-wrap { display:flex; flex-direction:column; align-items:center; gap:10px; }
+.phone-label { font-size:10px; font-weight:800; color:#444; text-transform:uppercase; letter-spacing:1px; }
+
+.phone {
+  width:360px; border-radius:46px; padding:14px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.phone.lp { background:#1e1e1e; }
+.phone.dp { background:#0a0a0a; }
+
+.phone-notch {
+  width:110px; height:30px;
+  margin:0 auto 4px;
+  display:flex; align-items:center; justify-content:center; gap:7px;
+}
+.notch-cam { width:10px; height:10px; border-radius:50%; background:#111; border:1.5px solid #222; }
+.notch-sensor { width:34px; height:6px; border-radius:3px; background:#0d0d0d; }
+
+.screen { border-radius:32px; overflow:hidden; position:relative; }
+
+/* STATUS BAR */
+.sbar {
+  height:26px; display:flex; align-items:center;
+  justify-content:space-between; padding:0 18px;
+  font-size:11px; font-weight:700; font-family:'DM Mono',monospace;
+}
+.sbar svg { width:13px; height:13px; }
+.sbar-icons { display:flex; gap:4px; align-items:center; }
+.sbar.L { background:var(--l-bar); color:rgba(255,255,255,0.85); }
+.sbar.D { background:var(--d-bar); color:var(--d-text2); }
+
+/* TOP APP BAR */
+.tbar {
+  height:56px; display:flex; align-items:center;
+  padding:0 6px 0 16px; gap:4px;
+}
+.tbar.L { background:var(--l-bar); }
+.tbar.D { background:var(--d-bar); border-bottom:1px solid var(--d-border); }
+.tbar-title { flex:1; font-size:19px; font-weight:800; color:#fff; letter-spacing:-0.3px; }
+.tbar-sub { font-size:11px; font-weight:500; color:rgba(255,255,255,0.5); display:block; margin-top:-1px; }
+.iBtn {
+  width:40px; height:40px; border-radius:20px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.iBtn svg { width:20px; height:20px; stroke-width:2; }
+.iBtn.L { color:rgba(255,255,255,0.9); }
+.iBtn.D { color:var(--d-text2); }
+
+/* SCROLL AREA */
+.scroll { overflow:hidden; padding-bottom:4px; }
+.scroll.L { background:var(--l-bg); }
+.scroll.D { background:var(--d-bg); }
+
+/* SECTION CHIP */
+.sec-chip {
+  padding:6px 16px 3px; display:flex; align-items:center; gap:6px;
+}
+.sec-chip.L { background:var(--l-bg); }
+.sec-chip.D { background:var(--d-bg); }
+.sec-chip-txt { font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:0.8px; }
+.sec-chip-txt.L { color:var(--green-700); }
+.sec-chip-txt.D { color:var(--d-accent); }
+
+/* PLANT ROW */
+.prow { padding:10px 16px 9px; }
+.prow.L { background:var(--l-surface); border-bottom:1px solid var(--l-border); }
+.prow.D { background:var(--d-surface); border-bottom:1px solid var(--d-border); }
+.prow-top { display:flex; align-items:baseline; gap:6px; margin-bottom:7px; }
+.pname { font-size:15px; font-weight:700; }
+.pname.L { color:var(--l-text); }
+.pname.D { color:var(--d-text); }
+.psub { font-size:11px; font-weight:500; font-style:italic; }
+.psub.L { color:var(--l-text3); }
+.psub.D { color:var(--d-text3); }
+
+/* MONTH STRIP */
+.mstrip { display:flex; gap:3px; }
+.mc {
+  flex:1; height:28px; border-radius:6px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:1px; font-family:'DM Mono',monospace;
+}
+.mc span { font-size:7.5px; font-weight:700; line-height:1; }
+.mc .ml { font-size:5.5px; opacity:0.8; }
+/* inactive */
+.mc.mi.L { background:var(--l-inactive); }
+.mc.mi.D { background:var(--d-inactive); }
+.mc.mi span { opacity:0.5; }
+/* active types */
+.mc.av { background:var(--amber);   color:#2a1800; }
+.mc.ad { background:var(--green-500); color:#fff; }
+.mc.ap { background:var(--blue);    color:#fff; }
+.mc.ae { background:var(--red);     color:#fff; }
+.mc.apg{ background:var(--purple);  color:#fff; }
+
+/* FAB */
+.fab {
+  position:absolute; bottom:68px; right:16px;
+  width:56px; height:56px; border-radius:16px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 20px rgba(0,0,0,0.35);
+}
+.fab svg { width:26px; height:26px; stroke-width:2.5; }
+.fab.L { background:var(--green-600); color:#fff; }
+.fab.D { background:var(--d-accent); color:#0a1a0a; }
+
+/* NAV BAR */
+.nav {
+  height:62px; display:flex; align-items:center;
+  justify-content:space-around; padding:0 8px;
+  position:relative;
+}
+.nav.L { background:var(--l-surface); border-top:1px solid var(--l-border); }
+.nav.D { background:var(--d-bar); border-top:1px solid var(--d-border); }
+.nitem {
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  font-size:10px; font-weight:700; flex:1;
+}
+.nitem svg { width:22px; height:22px; stroke-width:1.8; }
+.nitem.L { color:var(--l-text3); }
+.nitem.D { color:var(--d-text3); }
+.nitem.active.L { color:var(--green-700); }
+.nitem.active.D { color:var(--d-accent); }
+.npill {
+  width:36px; height:34px; border-radius:17px;
+  display:flex; align-items:center; justify-content:center;
+}
+.npill.L { background:#d8eed8; }
+.npill.D { background:#1e2e1e; }
+
+/* ── BACK BAR ── */
+.bbar {
+  height:56px; display:flex; align-items:center; padding:0 8px; gap:4px;
+}
+.bbar.L { background:var(--l-bar); }
+.bbar.D { background:var(--d-bar); border-bottom:1px solid var(--d-border); }
+.bbar-title { font-size:18px; font-weight:800; color:#fff; flex:1; padding-left:4px; }
+.save-btn {
+  padding:8px 16px; border-radius:20px;
+  font-size:13px; font-weight:700; font-family:'Nunito',sans-serif;
+  border:none; cursor:pointer;
+}
+.save-btn.L { background:rgba(255,255,255,0.22); color:#fff; }
+.save-btn.D { background:rgba(255,255,255,0.1); color:var(--d-accent); }
+
+/* FORM */
+.flabel {
+  font-size:10px; font-weight:800; text-transform:uppercase;
+  letter-spacing:0.7px; margin-bottom:4px; padding:0 16px;
+  display:block; margin-top:10px;
+}
+.flabel.L { color:var(--l-text2); }
+.flabel.D { color:var(--d-text2); }
+.ffield {
+  display:flex; align-items:center; justify-content:space-between;
+  margin:0 16px; border-radius:12px; padding:11px 14px;
+  font-size:14px; font-weight:600; font-family:'Nunito',sans-serif;
+}
+.ffield.L { background:var(--l-surface); color:var(--l-text); border:1.5px solid var(--l-border); }
+.ffield.D { background:var(--d-surface2); color:var(--d-text); border:1.5px solid var(--d-border); }
+.ffield.focused.L { border-color:var(--green-500); }
+.ffield.focused.D { border-color:var(--d-accent); }
+
+/* MONTH GRID (edit screen) */
+.mgrid {
+  display:grid; grid-template-columns:repeat(6,1fr);
+  gap:5px; padding:8px 16px 0;
+}
+.mbtn {
+  border-radius:10px; padding:8px 3px;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+}
+.mbtn .mn { font-size:10px; font-weight:600; font-family:'DM Mono',monospace; }
+.mbtn .mb { font-size:7px; font-weight:700; padding:2px 4px; border-radius:4px; font-family:'Nunito',sans-serif; }
+.mbtn.mi.L { background:var(--l-surface); }
+.mbtn.mi.D { background:var(--d-surface2); }
+.mbtn.mi .mn.L { color:var(--l-text3); }
+.mbtn.mi .mn.D { color:var(--d-text3); }
+.mbtn.mi .mb { opacity:0; }
+.mbtn.av { background:var(--amber); }
+.mbtn.av .mn { color:rgba(0,0,0,0.55); }
+.mbtn.av .mb { background:rgba(0,0,0,0.18); color:#2a1800; }
+.mbtn.ad { background:var(--green-500); }
+.mbtn.ad .mn { color:rgba(255,255,255,0.7); }
+.mbtn.ad .mb { background:rgba(255,255,255,0.2); color:#fff; }
+.mbtn.ap { background:var(--blue); }
+.mbtn.ap .mn { color:rgba(255,255,255,0.7); }
+.mbtn.ap .mb { background:rgba(255,255,255,0.2); color:#fff; }
+.mbtn.ae { background:var(--red); }
+.mbtn.ae .mn { color:rgba(255,255,255,0.7); }
+.mbtn.ae .mb { background:rgba(255,255,255,0.2); color:#fff; }
+
+/* BOTTOM SHEET */
+.bsheet {
+  position:absolute; bottom:0; left:0; right:0;
+  border-radius:24px 24px 32px 32px; padding-bottom:16px;
+  z-index:20;
+}
+.bsheet.L { background:#fff; box-shadow:0 -8px 40px rgba(0,0,0,0.12); }
+.bsheet.D { background:#1e1e1e; box-shadow:0 -8px 40px rgba(0,0,0,0.6); }
+.bsh { width:36px; height:4px; border-radius:2px; margin:10px auto 12px; }
+.bsh.L { background:#ccc; }
+.bsh.D { background:#444; }
+.bs-title { font-size:16px; font-weight:800; padding:0 20px 10px; }
+.bs-title.L { color:var(--l-text); }
+.bs-title.D { color:var(--d-text); }
+.rrow { display:flex; align-items:center; padding:9px 20px; gap:12px; cursor:pointer; }
+.rdot {
+  width:20px; height:20px; border-radius:10px;
+  border:2px solid currentColor;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.rdot.on::after { content:''; width:10px; height:10px; border-radius:5px; background:currentColor; display:block; }
+.swatch { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
+.rlabel { font-size:14px; font-weight:600; flex:1; }
+.rlabel.L { color:var(--l-text); }
+.rlabel.D { color:var(--d-text); }
+.bs-note { padding:6px 20px 2px; }
+.bs-note-lbl { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:4px; display:block; }
+.bs-note-lbl.L { color:var(--l-text2); }
+.bs-note-lbl.D { color:var(--d-text2); }
+.bs-input {
+  width:100%; border-radius:10px; padding:9px 14px;
+  font-size:13px; font-weight:600; font-family:'Nunito',sans-serif;
+  border:none; outline:none;
+}
+.bs-input.L { background:var(--l-bg); color:var(--l-text); }
+.bs-input.D { background:var(--d-surface2); color:var(--d-text); }
+.bs-confirm {
+  margin:10px 20px 0; width:calc(100% - 40px);
+  padding:13px; border-radius:14px; border:none;
+  font-size:14px; font-weight:800; font-family:'Nunito',sans-serif; cursor:pointer;
+}
+.bs-confirm.L { background:var(--green-600); color:#fff; }
+.bs-confirm.D { background:var(--d-accent); color:#091409; }
+
+/* LIBRARY */
+.sbar-search { margin:8px 16px; border-radius:28px; padding:9px 16px; display:flex; align-items:center; gap:10px; }
+.sbar-search.L { background:var(--l-surface); border:1.5px solid var(--l-border); }
+.sbar-search.D { background:var(--d-surface2); border:1.5px solid var(--d-border); }
+.sph { font-size:13px; font-weight:500; }
+.sph.L { color:var(--l-text3); }
+.sph.D { color:var(--d-text3); }
+.fchips { display:flex; gap:6px; padding:2px 16px 8px; overflow:hidden; }
+.fc { padding:5px 14px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+.fc.L { background:var(--l-surface); color:var(--l-text2); border:1px solid var(--l-border); }
+.fc.D { background:var(--d-surface2); color:var(--d-text2); border:1px solid var(--d-border); }
+.fc.on.L { background:var(--green-600); color:#fff; border-color:var(--green-600); }
+.fc.on.D { background:var(--d-accent); color:#091409; border-color:var(--d-accent); }
+.lrow { display:flex; align-items:center; padding:11px 16px; gap:12px; }
+.lrow.L { background:var(--l-surface); border-bottom:1px solid var(--l-border); }
+.lrow.D { background:var(--d-surface); border-bottom:1px solid var(--d-border); }
+.lic { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.lic.L { background:var(--l-bg); }
+.lic.D { background:var(--d-surface2); }
+.lic svg { width:22px; height:22px; stroke-width:1.6; }
+.lic.L svg { stroke:var(--green-600); }
+.lic.D svg { stroke:var(--d-accent); }
+.linfo { flex:1; }
+.lname { font-size:14px; font-weight:700; }
+.lname.L { color:var(--l-text); }
+.lname.D { color:var(--d-text); }
+.lsub { font-size:11px; font-weight:500; margin-bottom:4px; }
+.lsub.L { color:var(--l-text3); }
+.lsub.D { color:var(--d-text3); }
+.ldots { display:flex; gap:2px; }
+.ld { height:5px; border-radius:2.5px; }
+.ld.e.L { background:var(--l-inactive); width:12px; }
+.ld.e.D { background:var(--d-inactive); width:12px; }
+.larr { font-size:16px; }
+.larr.L { color:var(--l-text3); }
+.larr.D { color:var(--d-text3); }
+
+/* SETTINGS */
+.sg { padding:6px 16px 0; }
+.sg-t { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; padding:8px 0 4px; display:block; }
+.sg-t.L { color:var(--l-text2); }
+.sg-t.D { color:var(--d-text2); }
+.sc { border-radius:14px; overflow:hidden; margin-bottom:8px; }
+.sc.L { background:var(--l-surface); border:1px solid var(--l-border); }
+.sc.D { background:var(--d-surface); border:1px solid var(--d-border); }
+.srow { display:flex; align-items:center; padding:13px 14px; gap:12px; }
+.srow.L { border-bottom:1px solid var(--l-border); }
+.srow.D { border-bottom:1px solid var(--d-border); }
+.srow:last-child { border-bottom:none; }
+.sico { width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.sico.L { background:var(--l-bg); }
+.sico.D { background:var(--d-surface2); }
+.sico svg { width:17px; height:17px; stroke-width:1.8; }
+.sico.L svg { stroke:var(--green-600); }
+.sico.D svg { stroke:var(--d-accent); }
+.scnt { flex:1; }
+.slbl { font-size:14px; font-weight:700; }
+.slbl.L { color:var(--l-text); }
+.slbl.D { color:var(--d-text); }
+.sval { font-size:11px; font-weight:500; margin-top:1px; }
+.sval.L { color:var(--l-text3); }
+.sval.D { color:var(--d-text3); }
+.sarr { font-size:14px; }
+.sarr.L { color:var(--l-text3); }
+.sarr.D { color:var(--d-text3); }
+
+/* ── SVG ICON HELPERS ── */
+.ico { display:inline-block; vertical-align:middle; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>🌱 <span>GartenPlaner</span> — Mockups v2</h1>
+  <p>Überarbeiteter Kontrast · Outline Icons · Bedingtes Notizfeld · Neutraler Dark Mode</p>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1: PLAN OVERVIEW
+══════════════════════════════════════ -->
+<div class="section-title">Screen 1 — Jahresplan</div>
+<div class="phones-row">
+
+  <!-- LIGHT -->
+  <div class="phone-wrap">
+    <div class="phone-label">Light Mode</div>
+    <div class="phone lp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen L" style="position:relative">
+        <div class="sbar L">
+          <span>9:41</span>
+          <div class="sbar-icons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6h4v12H1zM6 4h4v14H6zM11 2h4v16h-4zM16 0h4v18h-4z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2"/></svg>
+          </div>
+        </div>
+        <div class="tbar L">
+          <div class="tbar-title">
+            Garten Brandenburg
+            <span class="tbar-sub">2026 · Letzter Frost ~15. April</span>
+          </div>
+          <!-- Only Edit + Print in top bar -->
+          <div class="iBtn L">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div class="iBtn L">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          </div>
+        </div>
+
+        <div class="scroll L" style="padding-bottom:70px">
+          <div class="sec-chip L"><span class="sec-chip-txt L">🥬 Gemüse &amp; Kräuter</span></div>
+
+          <div class="prow L">
+            <div class="prow-top"><span class="pname L">Tomaten</span><span class="psub L">Voranzucht</span></div>
+            <div class="mstrip">
+              <div class="mc mi L"><span>J</span></div>
+              <div class="mc mi L"><span>F</span></div>
+              <div class="mc av"><span>M</span><span class="ml">Voranz</span></div>
+              <div class="mc av"><span>A</span><span class="ml">Voranz</span></div>
+              <div class="mc ap"><span>M</span><span class="ml">Auspfl</span></div>
+              <div class="mc mi L"><span>J</span></div>
+              <div class="mc ae"><span>J</span><span class="ml">Ernte</span></div>
+              <div class="mc ae"><span>A</span><span class="ml">Ernte↑</span></div>
+              <div class="mc ae"><span>S</span><span class="ml">Ernte</span></div>
+              <div class="mc mi L"><span>O</span></div>
+              <div class="mc mi L"><span>N</span></div>
+              <div class="mc mi L"><span>D</span></div>
+            </div>
+          </div>
+
+          <div class="prow L">
+            <div class="prow-top"><span class="pname L">Möhren</span><span class="psub L">Direktsaat</span></div>
+            <div class="mstrip">
+              <div class="mc mi L"><span>J</span></div>
+              <div class="mc mi L"><span>F</span></div>
+              <div class="mc ad"><span>M</span><span class="ml">Saat</span></div>
+              <div class="mc ad"><span>A</span><span class="ml">Saat</span></div>
+              <div class="mc mi L"><span>M</span></div>
+              <div class="mc mi L"><span>J</span></div>
+              <div class="mc mi L"><span>J</span></div>
+              <div class="mc ae"><span>A</span><span class="ml">Ernte</span></div>
+              <div class="mc ae"><span>S</span><span class="ml">Ernte↑</span></div>
+              <div class="mc ae"><span>O</span><span class="ml">Lager</span></div>
+              <div class="mc mi L"><span>N</span></div>
+              <div class="mc mi L"><span>D</span></div>
+            </div>
+          </div>
+
+          <div class="prow L">
+            <div class="prow-top"><span class="pname L">Knoblauch</span><span class="psub L">Überwinternd</span></div>
+            <div class="mstrip">
+              <div class="mc apg"><span>J</span><span class="ml">Pflege</span></div>
+              <div class="mc apg"><span>F</span><span class="ml">Pflege</span></div>
+              <div class="mc apg"><span>M</span><span class="ml">Pflege</span></div>
+              <div class="mc apg"><span>A</span><span class="ml">Pflege</span></div>
+              <div class="mc apg"><span>M</span><span class="ml">Pflege</span></div>
+              <div class="mc ae"><span>J</span><span class="ml">Ernte↑</span></div>
+              <div class="mc mi L"><span>J</span></div>
+              <div class="mc mi L"><span>A</span></div>
+              <div class="mc mi L"><span>S</span></div>
+              <div class="mc ad"><span>O</span><span class="ml">Setzen</span></div>
+              <div class="mc ad"><span>N</span><span class="ml">Setzen</span></div>
+              <div class="mc mi L"><span>D</span></div>
+            </div>
+          </div>
+
+          <div class="sec-chip L" style="margin-top:6px"><span class="sec-chip-txt L">🌿 Kräuter</span></div>
+
+          <div class="prow L">
+            <div class="prow-top"><span class="pname L">Basilikum</span><span class="psub L">Voranzucht</span></div>
+            <div class="mstrip">
+              <div class="mc mi L"><span>J</span></div>
+              <div class="mc mi L"><span>F</span></div>
+              <div class="mc av"><span>M</span><span class="ml">Voranz</span></div>
+              <div class="mc av"><span>A</span><span class="ml">Voranz</span></div>
+              <div class="mc ap"><span>M</span><span class="ml">Auspfl</span></div>
+              <div class="mc ae"><span>J</span><span class="ml">Ernte</span></div>
+              <div class="mc ae"><span>J</span><span class="ml">Ernte↑</span></div>
+              <div class="mc ae"><span>A</span><span class="ml">Ernte</span></div>
+              <div class="mc mi L"><span>S</span></div>
+              <div class="mc mi L"><span>O</span></div>
+              <div class="mc mi L"><span>N</span></div>
+              <div class="mc mi L"><span>D</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fab L">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+
+        <div class="nav L">
+          <div class="nitem active L">
+            <div class="npill L">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            </div>
+            Plan
+          </div>
+          <div class="nitem L">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Bibliothek
+          </div>
+          <div class="nitem L">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            Einstellungen
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DARK -->
+  <div class="phone-wrap">
+    <div class="phone-label">Dark Mode</div>
+    <div class="phone dp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen D" style="position:relative">
+        <div class="sbar D"><span>9:41</span><div class="sbar-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6h4v12H1zM6 4h4v14H6zM11 2h4v16h-4zM16 0h4v18h-4z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2"/></svg></div></div>
+        <div class="tbar D">
+          <div class="tbar-title">Garten Brandenburg<span class="tbar-sub">2026 · Letzter Frost ~15. April</span></div>
+          <div class="iBtn D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+          <div class="iBtn D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
+        </div>
+        <div class="scroll D" style="padding-bottom:70px">
+          <div class="sec-chip D"><span class="sec-chip-txt D">🥬 Gemüse &amp; Kräuter</span></div>
+          <div class="prow D">
+            <div class="prow-top"><span class="pname D">Tomaten</span><span class="psub D">Voranzucht</span></div>
+            <div class="mstrip">
+              <div class="mc mi D"><span>J</span></div><div class="mc mi D"><span>F</span></div>
+              <div class="mc av"><span>M</span><span class="ml">Voranz</span></div>
+              <div class="mc av"><span>A</span><span class="ml">Voranz</span></div>
+              <div class="mc ap"><span>M</span><span class="ml">Auspfl</span></div>
+              <div class="mc mi D"><span>J</span></div>
+              <div class="mc ae"><span>J</span><span class="ml">Ernte</span></div>
+              <div class="mc ae"><span>A</span><span class="ml">Ernte↑</span></div>
+              <div class="mc ae"><span>S</span><span class="ml">Ernte</span></div>
+              <div class="mc mi D"><span>O</span></div><div class="mc mi D"><span>N</span></div><div class="mc mi D"><span>D</span></div>
+            </div>
+          </div>
+          <div class="prow D">
+            <div class="prow-top"><span class="pname D">Möhren</span><span class="psub D">Direktsaat</span></div>
+            <div class="mstrip">
+              <div class="mc mi D"><span>J</span></div><div class="mc mi D"><span>F</span></div>
+              <div class="mc ad"><span>M</span><span class="ml">Saat</span></div>
+              <div class="mc ad"><span>A</span><span class="ml">Saat</span></div>
+              <div class="mc mi D"><span>M</span></div><div class="mc mi D"><span>J</span></div><div class="mc mi D"><span>J</span></div>
+              <div class="mc ae"><span>A</span><span class="ml">Ernte</span></div>
+              <div class="mc ae"><span>S</span><span class="ml">Ernte↑</span></div>
+              <div class="mc ae"><span>O</span><span class="ml">Lager</span></div>
+              <div class="mc mi D"><span>N</span></div><div class="mc mi D"><span>D</span></div>
+            </div>
+          </div>
+          <div class="prow D">
+            <div class="prow-top"><span class="pname D">Knoblauch</span><span class="psub D">Überwinternd</span></div>
+            <div class="mstrip">
+              <div class="mc apg"><span>J</span><span class="ml">Pflege</span></div>
+              <div class="mc apg"><span>F</span><span class="ml">Pflege</span></div>
+              <div class="mc apg"><span>M</span><span class="ml">Pflege</span></div>
+              <div class="mc apg"><span>A</span><span class="ml">Pflege</span></div>
+              <div class="mc apg"><span>M</span><span class="ml">Pflege</span></div>
+              <div class="mc ae"><span>J</span><span class="ml">Ernte↑</span></div>
+              <div class="mc mi D"><span>J</span></div><div class="mc mi D"><span>A</span></div><div class="mc mi D"><span>S</span></div>
+              <div class="mc ad"><span>O</span><span class="ml">Setzen</span></div>
+              <div class="mc ad"><span>N</span><span class="ml">Setzen</span></div>
+              <div class="mc mi D"><span>D</span></div>
+            </div>
+          </div>
+          <div class="sec-chip D" style="margin-top:6px"><span class="sec-chip-txt D">🌿 Kräuter</span></div>
+          <div class="prow D">
+            <div class="prow-top"><span class="pname D">Basilikum</span><span class="psub D">Voranzucht</span></div>
+            <div class="mstrip">
+              <div class="mc mi D"><span>J</span></div><div class="mc mi D"><span>F</span></div>
+              <div class="mc av"><span>M</span><span class="ml">Voranz</span></div>
+              <div class="mc av"><span>A</span><span class="ml">Voranz</span></div>
+              <div class="mc ap"><span>M</span><span class="ml">Auspfl</span></div>
+              <div class="mc ae"><span>J</span><span class="ml">Ernte</span></div>
+              <div class="mc ae"><span>J</span><span class="ml">Ernte↑</span></div>
+              <div class="mc ae"><span>A</span><span class="ml">Ernte</span></div>
+              <div class="mc mi D"><span>S</span></div><div class="mc mi D"><span>O</span></div><div class="mc mi D"><span>N</span></div><div class="mc mi D"><span>D</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="fab D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="nav D">
+          <div class="nitem active D"><div class="npill D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>Plan</div>
+          <div class="nitem D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Bibliothek</div>
+          <div class="nitem D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Einstellungen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2: EDIT PLANT (visible) + BOTTOM SHEET (Pflege selected)
+══════════════════════════════════════ -->
+<div class="section-title">Screen 2 — Pflanze bearbeiten + Notizfeld (nur bei Pflege)</div>
+<div class="phones-row">
+
+  <!-- LIGHT: Edit plant fully visible, sheet closed -->
+  <div class="phone-wrap">
+    <div class="phone-label">Pflanze bearbeiten · Light</div>
+    <div class="phone lp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen L">
+        <div class="sbar L"><span>9:41</span></div>
+        <div class="bbar L">
+          <div class="iBtn L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></div>
+          <span class="bbar-title">Pflanze bearbeiten</span>
+          <button class="save-btn L">Speichern</button>
+        </div>
+        <div class="scroll L" style="padding-bottom:8px">
+          <span class="flabel L">Pflanzname</span>
+          <div class="ffield L focused">Tomaten</div>
+          <span class="flabel L">Untertitel (optional)</span>
+          <div class="ffield L">Voranzucht</div>
+          <span class="flabel L">Section</span>
+          <div class="ffield L">🥬 Gemüse &amp; Kräuter <span style="opacity:.4">▼</span></div>
+
+          <span class="flabel L" style="margin-top:14px">Aktivitäten pro Monat</span>
+          <div class="mgrid">
+            <div class="mbtn mi L"><span class="mn L">Jan</span><span class="mb">—</span></div>
+            <div class="mbtn mi L"><span class="mn L">Feb</span><span class="mb">—</span></div>
+            <div class="mbtn av"><span class="mn">Mär</span><span class="mb">Voranz</span></div>
+            <div class="mbtn av"><span class="mn">Apr</span><span class="mb">Voranz</span></div>
+            <div class="mbtn ap"><span class="mn">Mai</span><span class="mb">Auspfl</span></div>
+            <div class="mbtn mi L"><span class="mn L">Jun</span><span class="mb">—</span></div>
+            <div class="mbtn ae"><span class="mn">Jul</span><span class="mb">Ernte</span></div>
+            <div class="mbtn ae"><span class="mn">Aug</span><span class="mb">Ernte↑</span></div>
+            <div class="mbtn ae"><span class="mn">Sep</span><span class="mb">Ernte</span></div>
+            <div class="mbtn mi L"><span class="mn L">Okt</span><span class="mb">—</span></div>
+            <div class="mbtn mi L"><span class="mn L">Nov</span><span class="mb">—</span></div>
+            <div class="mbtn mi L"><span class="mn L">Dez</span><span class="mb">—</span></div>
+          </div>
+          <div style="padding:10px 16px 0;font-size:11px;color:var(--l-text3);font-style:italic">
+            Tipp: Auf einen Monat tippen um Aktivität festlegen.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DARK: Bottom sheet open with PFLEGE selected → shows Notiz field -->
+  <div class="phone-wrap">
+    <div class="phone-label">Monatsauswahl (Pflege) · Dark</div>
+    <div class="phone dp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen D" style="position:relative">
+        <div class="sbar D"><span>9:41</span></div>
+        <div class="bbar D">
+          <div class="iBtn D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></div>
+          <span class="bbar-title">Pflanze bearbeiten</span>
+          <button class="save-btn D">Speichern</button>
+        </div>
+        <!-- dimmed background content -->
+        <div class="scroll D" style="padding-bottom:8px;opacity:0.3">
+          <div class="mgrid">
+            <div class="mbtn mi D"><span class="mn D">Jan</span></div>
+            <div class="mbtn mi D"><span class="mn D">Feb</span></div>
+            <div class="mbtn av"><span class="mn">Mär</span></div>
+            <div class="mbtn av"><span class="mn">Apr</span></div>
+            <div class="mbtn ap"><span class="mn">Mai</span></div>
+            <div class="mbtn mi D"><span class="mn D">Jun</span></div>
+            <div class="mbtn ae"><span class="mn">Jul</span></div>
+            <div class="mbtn ae"><span class="mn">Aug</span></div>
+            <div class="mbtn ae"><span class="mn">Sep</span></div>
+            <div class="mbtn mi D"><span class="mn D">Okt</span></div>
+            <div class="mbtn mi D"><span class="mn D">Nov</span></div>
+            <div class="mbtn mi D"><span class="mn D">Dez</span></div>
+          </div>
+        </div>
+
+        <!-- BOTTOM SHEET: Pflege selected, Notiz field visible -->
+        <div class="bsheet D">
+          <div class="bsh D"></div>
+          <div class="bs-title D">Januar</div>
+          <div class="rrow" style="color:var(--amber);opacity:0.5"><div class="rdot" style="color:var(--amber)"></div><div class="swatch" style="background:var(--amber)"></div><span class="rlabel D">Voranzucht</span></div>
+          <div class="rrow" style="color:var(--green-400);opacity:0.5"><div class="rdot" style="color:var(--green-400)"></div><div class="swatch" style="background:var(--green-500)"></div><span class="rlabel D">Direktsaat</span></div>
+          <div class="rrow" style="color:var(--blue);opacity:0.5"><div class="rdot" style="color:var(--blue)"></div><div class="swatch" style="background:var(--blue)"></div><span class="rlabel D">Auspflanzen</span></div>
+          <div class="rrow" style="color:var(--red);opacity:0.5"><div class="rdot" style="color:var(--red)"></div><div class="swatch" style="background:var(--red)"></div><span class="rlabel D">Ernte</span></div>
+          <!-- PFLEGE selected -->
+          <div class="rrow" style="color:var(--purple)"><div class="rdot on" style="color:var(--purple)"></div><div class="swatch" style="background:var(--purple)"></div><span class="rlabel D" style="font-weight:800">Pflege</span></div>
+          <!-- Notiz field — only visible when Pflege selected -->
+          <div class="bs-note">
+            <span class="bs-note-lbl D">Was wird gepflegt?</span>
+            <input class="bs-input D" placeholder="z.B. Gießen, Düngen, Schneiden..." readonly>
+          </div>
+          <button class="bs-confirm D">Übernehmen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHT: Bottom sheet open with ERNTE selected → no Notiz field -->
+  <div class="phone-wrap">
+    <div class="phone-label">Monatsauswahl (Ernte) · Light</div>
+    <div class="phone lp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen L" style="position:relative">
+        <div class="sbar L"><span>9:41</span></div>
+        <div class="bbar L">
+          <div class="iBtn L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></div>
+          <span class="bbar-title">Pflanze bearbeiten</span>
+          <button class="save-btn L">Speichern</button>
+        </div>
+        <div class="scroll L" style="padding-bottom:8px;opacity:0.25">
+          <div class="mgrid">
+            <div class="mbtn mi L"><span class="mn L">Jan</span></div>
+            <div class="mbtn mi L"><span class="mn L">Feb</span></div>
+            <div class="mbtn av"><span class="mn">Mär</span></div>
+            <div class="mbtn av"><span class="mn">Apr</span></div>
+            <div class="mbtn ap"><span class="mn">Mai</span></div>
+            <div class="mbtn mi L"><span class="mn L">Jun</span></div>
+            <div class="mbtn ae"><span class="mn">Jul</span></div>
+            <div class="mbtn ae"><span class="mn">Aug</span></div>
+            <div class="mbtn ae"><span class="mn">Sep</span></div>
+            <div class="mbtn mi L"><span class="mn L">Okt</span></div>
+            <div class="mbtn mi L"><span class="mn L">Nov</span></div>
+            <div class="mbtn mi L"><span class="mn L">Dez</span></div>
+          </div>
+        </div>
+        <!-- Sheet: Ernte selected, NO notiz field -->
+        <div class="bsheet L">
+          <div class="bsh L"></div>
+          <div class="bs-title L">August</div>
+          <div class="rrow" style="color:var(--amber);opacity:0.5"><div class="rdot" style="color:var(--amber)"></div><div class="swatch" style="background:var(--amber)"></div><span class="rlabel L">Voranzucht</span></div>
+          <div class="rrow" style="color:var(--green-600);opacity:0.5"><div class="rdot" style="color:var(--green-600)"></div><div class="swatch" style="background:var(--green-500)"></div><span class="rlabel L">Direktsaat</span></div>
+          <div class="rrow" style="color:var(--blue);opacity:0.5"><div class="rdot" style="color:var(--blue)"></div><div class="swatch" style="background:var(--blue)"></div><span class="rlabel L">Auspflanzen</span></div>
+          <div class="rrow" style="color:var(--red)"><div class="rdot on" style="color:var(--red)"></div><div class="swatch" style="background:var(--red)"></div><span class="rlabel L" style="font-weight:800">Ernte</span></div>
+          <div class="rrow" style="color:var(--purple);opacity:0.5"><div class="rdot" style="color:var(--purple)"></div><div class="swatch" style="background:var(--purple)"></div><span class="rlabel L">Pflege</span></div>
+          <div class="rrow" style="opacity:0.35"><div class="rdot" style="color:#888"></div><div class="swatch" style="background:#ccc"></div><span class="rlabel L">Leer / nichts</span></div>
+          <!-- No Notiz field when Ernte is selected -->
+          <button class="bs-confirm L">Übernehmen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3: LIBRARY
+══════════════════════════════════════ -->
+<div class="section-title">Screen 3 — Pflanzenbibliothek</div>
+<div class="phones-row">
+
+  <div class="phone-wrap">
+    <div class="phone-label">Bibliothek · Light</div>
+    <div class="phone lp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen L">
+        <div class="sbar L"><span>9:41</span></div>
+        <div class="tbar L">
+          <div class="iBtn L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></div>
+          <div class="tbar-title">Pflanzenbibliothek</div>
+        </div>
+        <div class="scroll L" style="padding-bottom:70px">
+          <div class="sbar-search L">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="sph L">Pflanze suchen...</span>
+          </div>
+          <div class="fchips">
+            <div class="fc on L">Alle</div>
+            <div class="fc L">Fruchtgemüse</div>
+            <div class="fc L">Wurzel</div>
+            <div class="fc L">Kräuter</div>
+            <div class="fc L">Hülsen</div>
+          </div>
+          <div class="lrow L">
+            <div class="lic L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M12 2a14.5 14.5 0 0 1 4 10 14.5 14.5 0 0 1-4 10"/><path d="M2 12h20"/></svg></div>
+            <div class="linfo"><div class="lname L">Tomaten</div><div class="lsub L">Fruchtgemüse · Voranzucht</div><div class="ldots"><div class="ld e L"></div><div class="ld e L"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--blue);width:12px"></div><div class="ld e L"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld e L"></div></div></div>
+            <span class="larr L">›</span>
+          </div>
+          <div class="lrow L">
+            <div class="lic L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22V12M12 12C12 7 8 3 3 3c0 5 4 9 9 9zM12 12c0-5 4-9 9-9-1 5-4 9-9 9z"/></svg></div>
+            <div class="linfo"><div class="lname L">Möhren</div><div class="lsub L">Wurzelgemüse · Direktsaat</div><div class="ldots"><div class="ld e L"></div><div class="ld e L"></div><div class="ld" style="background:var(--green-500);width:12px"></div><div class="ld" style="background:var(--green-500);width:12px"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e L"></div><div class="ld e L"></div></div></div>
+            <span class="larr L">›</span>
+          </div>
+          <div class="lrow L">
+            <div class="lic L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="12" rx="10" ry="5" transform="rotate(-45 12 12)"/><path d="M12 2v20M2 12h20"/></svg></div>
+            <div class="linfo"><div class="lname L">Zucchini</div><div class="lsub L">Fruchtgemüse · Direktsaat</div><div class="ldots"><div class="ld e L"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--blue);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld e L"></div></div></div>
+            <span class="larr L">›</span>
+          </div>
+          <div class="lrow L">
+            <div class="lic L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a5 5 0 0 1 5 5c0 5-5 11-5 11S7 12 7 7a5 5 0 0 1 5-5z"/><circle cx="12" cy="7" r="2"/></svg></div>
+            <div class="linfo"><div class="lname L">Knoblauch</div><div class="lsub L">Zwiebeln &amp; Lauch · Überwinternd</div><div class="ldots"><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld" style="background:var(--green-500);width:12px"></div><div class="ld" style="background:var(--green-500);width:12px"></div><div class="ld e L"></div></div></div>
+            <span class="larr L">›</span>
+          </div>
+          <div class="lrow L">
+            <div class="lic L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 3v12M18 9a6 6 0 0 1-12 0"/><path d="M6 21h12M12 15v6"/></svg></div>
+            <div class="linfo"><div class="lname L">Basilikum</div><div class="lsub L">Kräuter · Voranzucht</div><div class="ldots"><div class="ld e L"></div><div class="ld e L"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--blue);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld e L"></div><div class="ld e L"></div></div></div>
+            <span class="larr L">›</span>
+          </div>
+        </div>
+        <div class="nav L">
+          <div class="nitem L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Plan</div>
+          <div class="nitem active L"><div class="npill L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Bibliothek</div>
+          <div class="nitem L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Einstellungen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DARK Library -->
+  <div class="phone-wrap">
+    <div class="phone-label">Bibliothek · Dark</div>
+    <div class="phone dp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen D">
+        <div class="sbar D"><span>9:41</span></div>
+        <div class="tbar D"><div class="iBtn D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></div><div class="tbar-title">Pflanzenbibliothek</div></div>
+        <div class="scroll D" style="padding-bottom:70px">
+          <div class="sbar-search D"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.35"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="sph D">Pflanze suchen...</span></div>
+          <div class="fchips"><div class="fc on D">Alle</div><div class="fc D">Fruchtgemüse</div><div class="fc D">Wurzel</div><div class="fc D">Kräuter</div><div class="fc D">Hülsen</div></div>
+          <div class="lrow D"><div class="lic D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M12 2a14.5 14.5 0 0 1 4 10 14.5 14.5 0 0 1-4 10"/><path d="M2 12h20"/></svg></div><div class="linfo"><div class="lname D">Tomaten</div><div class="lsub D">Fruchtgemüse · Voranzucht</div><div class="ldots"><div class="ld e D"></div><div class="ld e D"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--blue);width:12px"></div><div class="ld e D"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld e D"></div></div></div><span class="larr D">›</span></div>
+          <div class="lrow D"><div class="lic D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22V12M12 12C12 7 8 3 3 3c0 5 4 9 9 9zM12 12c0-5 4-9 9-9-1 5-4 9-9 9z"/></svg></div><div class="linfo"><div class="lname D">Möhren</div><div class="lsub D">Wurzelgemüse · Direktsaat</div><div class="ldots"><div class="ld e D"></div><div class="ld e D"></div><div class="ld" style="background:var(--green-500);width:12px"></div><div class="ld" style="background:var(--green-500);width:12px"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e D"></div><div class="ld e D"></div></div></div><span class="larr D">›</span></div>
+          <div class="lrow D"><div class="lic D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="12" rx="10" ry="5" transform="rotate(-45 12 12)"/></svg></div><div class="linfo"><div class="lname D">Zucchini</div><div class="lsub D">Fruchtgemüse · Direktsaat</div><div class="ldots"><div class="ld e D"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--blue);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld e D"></div></div></div><span class="larr D">›</span></div>
+          <div class="lrow D"><div class="lic D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a5 5 0 0 1 5 5c0 5-5 11-5 11S7 12 7 7a5 5 0 0 1 5-5z"/><circle cx="12" cy="7" r="2"/></svg></div><div class="linfo"><div class="lname D">Knoblauch</div><div class="lsub D">Zwiebeln &amp; Lauch · Überwinternd</div><div class="ldots"><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--purple);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld" style="background:var(--green-500);width:12px"></div><div class="ld" style="background:var(--green-500);width:12px"></div><div class="ld e D"></div></div></div><span class="larr D">›</span></div>
+          <div class="lrow D"><div class="lic D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 3v12M18 9a6 6 0 0 1-12 0"/><path d="M6 21h12M12 15v6"/></svg></div><div class="linfo"><div class="lname D">Basilikum</div><div class="lsub D">Kräuter · Voranzucht</div><div class="ldots"><div class="ld e D"></div><div class="ld e D"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--amber);width:12px"></div><div class="ld" style="background:var(--blue);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld" style="background:var(--red);width:12px"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld e D"></div><div class="ld e D"></div></div></div><span class="larr D">›</span></div>
+        </div>
+        <div class="nav D">
+          <div class="nitem D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Plan</div>
+          <div class="nitem active D"><div class="npill D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Bibliothek</div>
+          <div class="nitem D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Einstellungen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4: SETTINGS
+══════════════════════════════════════ -->
+<div class="section-title">Screen 4 — Einstellungen</div>
+<div class="phones-row">
+
+  <div class="phone-wrap">
+    <div class="phone-label">Einstellungen · Light</div>
+    <div class="phone lp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen L">
+        <div class="sbar L"><span>9:41</span></div>
+        <div class="tbar L"><div class="tbar-title">Einstellungen</div></div>
+        <div class="scroll L" style="padding-bottom:70px">
+          <div class="sg">
+            <span class="sg-t L">Mein Plan</span>
+            <div class="sc L">
+              <div class="srow L"><div class="sico L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="scnt"><div class="slbl L">Plan-Titel</div><div class="sval L">Garten Brandenburg 2026</div></div><span class="sarr L">›</span></div>
+              <div class="srow L"><div class="sico L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="scnt"><div class="slbl L">Planjahr</div><div class="sval L">2026</div></div><span class="sarr L">›</span></div>
+            </div>
+          </div>
+          <div class="sg">
+            <span class="sg-t L">Klima &amp; Standort</span>
+            <div class="sc L">
+              <div class="srow L"><div class="sico L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></div><div class="scnt"><div class="slbl L">Letzter Spätfrost</div><div class="sval L">~15. April</div></div><span class="sarr L">›</span></div>
+              <div class="srow L"><div class="sico L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 14a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/><path d="M3 21h18M12 14v7"/></svg></div><div class="scnt"><div class="slbl L">Erster Herbstfrost</div><div class="sval L">~15. Oktober</div></div><span class="sarr L">›</span></div>
+              <div class="srow L"><div class="sico L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="scnt"><div class="slbl L">Klimazone / Boden</div><div class="sval L">7a · Lehmboden</div></div><span class="sarr L">›</span></div>
+            </div>
+          </div>
+          <div class="sg">
+            <span class="sg-t L">Export</span>
+            <div class="sc L">
+              <div class="srow" style="padding:13px 14px"><div class="sico L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div><div class="scnt"><div class="slbl L">Plan drucken / Als PDF</div><div class="sval L">A4 Querformat</div></div><span class="sarr L">›</span></div>
+            </div>
+          </div>
+          <div class="sg">
+            <span class="sg-t L">App</span>
+            <div class="sc L">
+              <div class="srow" style="padding:13px 14px"><div class="sico L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="scnt"><div class="slbl L">Version</div><div class="sval L">1.0.0 · GPL-3.0 · Open Source</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="nav L">
+          <div class="nitem L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Plan</div>
+          <div class="nitem L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Bibliothek</div>
+          <div class="nitem active L"><div class="npill L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>Einstellungen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone-label">Einstellungen · Dark</div>
+    <div class="phone dp">
+      <div class="phone-notch"><div class="notch-sensor"></div><div class="notch-cam"></div></div>
+      <div class="screen D">
+        <div class="sbar D"><span>9:41</span></div>
+        <div class="tbar D"><div class="tbar-title">Einstellungen</div></div>
+        <div class="scroll D" style="padding-bottom:70px">
+          <div class="sg">
+            <span class="sg-t D">Mein Plan</span>
+            <div class="sc D">
+              <div class="srow D"><div class="sico D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="scnt"><div class="slbl D">Plan-Titel</div><div class="sval D">Garten Brandenburg 2026</div></div><span class="sarr D">›</span></div>
+              <div class="srow D"><div class="sico D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="scnt"><div class="slbl D">Planjahr</div><div class="sval D">2026</div></div><span class="sarr D">›</span></div>
+            </div>
+          </div>
+          <div class="sg">
+            <span class="sg-t D">Klima &amp; Standort</span>
+            <div class="sc D">
+              <div class="srow D"><div class="sico D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></div><div class="scnt"><div class="slbl D">Letzter Spätfrost</div><div class="sval D">~15. April</div></div><span class="sarr D">›</span></div>
+              <div class="srow D"><div class="sico D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 14a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/><path d="M3 21h18M12 14v7"/></svg></div><div class="scnt"><div class="slbl D">Erster Herbstfrost</div><div class="sval D">~15. Oktober</div></div><span class="sarr D">›</span></div>
+              <div class="srow D"><div class="sico D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="scnt"><div class="slbl D">Klimazone / Boden</div><div class="sval D">7a · Lehmboden</div></div><span class="sarr D">›</span></div>
+            </div>
+          </div>
+          <div class="sg">
+            <span class="sg-t D">Export</span>
+            <div class="sc D">
+              <div class="srow" style="padding:13px 14px"><div class="sico D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div><div class="scnt"><div class="slbl D">Plan drucken / Als PDF</div><div class="sval D">A4 Querformat</div></div><span class="sarr D">›</span></div>
+            </div>
+          </div>
+          <div class="sg">
+            <span class="sg-t D">App</span>
+            <div class="sc D">
+              <div class="srow" style="padding:13px 14px"><div class="sico D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="scnt"><div class="slbl D">Version</div><div class="sval D">1.0.0 · GPL-3.0 · Open Source</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="nav D">
+          <div class="nitem D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Plan</div>
+          <div class="nitem D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Bibliothek</div>
+          <div class="nitem active D"><div class="npill D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>Einstellungen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
