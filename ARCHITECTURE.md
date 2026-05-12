@@ -23,6 +23,16 @@ Kernfunktion: einen jahresbasierten Aussaat- und Ernteplaner erstellen, bearbeit
 
 ---
 
+## Entschiedene Design-Fragen
+
+| Frage | Entscheidung | Konsequenz |
+|---|---|---|
+| Ein Plan oder mehrere? | **Mehrere Pläne** (ein Plan pro Jahr) | PlanListScreen nötig, `activePlanId` in SharedPreferences |
+| JSON-Backup/Restore? | **Ja** | Serialisierung des gesamten Plans inkl. Sections/Plants/MonthEntries via SAF |
+| Lokalisierung? | **v1.0 nur Deutsch** — alle Strings in `strings.xml`, kein Hardcoding | Englisch in v1.1 trivial addierbar |
+
+---
+
 ## Datenmodell
 
 ```
@@ -79,6 +89,14 @@ Plan 1──n Section 1──n Plant 1──n MonthEntry
 Room-Database: `GardenDatabase` mit einer einzigen Datenbankdatei `gartenplaner.db`.
 Migrationen ab v1.0 versioniert, kein Datenverlust bei Updates.
 
+### Aktiver Plan
+
+Welcher Plan gerade angezeigt wird, wird in `SharedPreferences` (Key: `active_plan_id`)
+gespeichert — nicht in Room. Grund: es ist kein relationales Datum, sondern
+reiner UI-State der zwischen App-Starts persistiert werden muss.
+
+Beim ersten Start: Demo-Plan wird geseeded, seine ID wird als `active_plan_id` gesetzt.
+
 ---
 
 ## Projektstruktur (Android-Modul)
@@ -101,10 +119,18 @@ app/src/main/
 │   │   └── PlantTemplate.kt
 │   ├── library/
 │   │   └── PlantLibrary.kt            Statische Liste von PlantTemplate-Objekten
+│   ├── prefs/
+│   │   └── AppPreferences.kt          SharedPreferences-Wrapper (activePlanId)
+│   ├── backup/
+│   │   ├── PlanExporter.kt            Plan → JSON-String
+│   │   └── PlanImporter.kt            JSON-String → Room (upsert)
 │   └── repository/
 │       ├── PlanRepository.kt          Aggregiert DAOs, Flow-basierte API
 │       └── LibraryRepository.kt       Filtert/sucht PlantTemplates
 ├── ui/
+│   ├── planlist/
+│   │   ├── PlanListScreen.kt          Übersicht aller Pläne (Jahr + Titel)
+│   │   └── PlanListViewModel.kt
 │   ├── plan/
 │   │   ├── PlanScreen.kt
 │   │   └── PlanViewModel.kt
@@ -134,21 +160,31 @@ app/src/main/
 
 ```
 MainActivity
-└── NavHost (Scaffold mit BottomNavigation)
-    ├── Tab: Plan
-    │   └── PlanScreen
-    │       ├── → EditPlantScreen (plantId oder neu)
-    │       ├── → PlantPickerScreen
-    │       └── → EditSectionScreen (sectionId oder neu)
-    ├── Tab: Bibliothek
-    │   └── PlantPickerScreen (standalone)
-    └── Tab: Einstellungen
-        └── SettingsScreen
+└── NavHost
+    ├── PlanListScreen           (Start-Destination — Übersicht aller Pläne)
+    │   └── → PlanScreen (planId)
+    └── Scaffold mit BottomNavigation (nur innerhalb PlanScreen aktiv)
+        ├── Tab: Plan
+        │   └── PlanScreen
+        │       ├── → EditPlantScreen (plantId oder neu)
+        │       ├── → PlantPickerScreen
+        │       └── → EditSectionScreen (sectionId oder neu)
+        ├── Tab: Bibliothek
+        │   └── PlantPickerScreen (standalone)
+        └── Tab: Einstellungen
+            └── SettingsScreen (zeigt Metadaten des aktiven Plans)
 ```
 
-Bottom-Navigation-Tabs: **Plan · Bibliothek · Einstellungen**
+**Startverhalten:**
+- Kein Plan in DB → PlanListScreen mit "Ersten Plan anlegen"-CTA
+- Genau ein Plan → PlanListScreen trotzdem anzeigen (konsistentes UX-Pattern)
+- Plan antippen → PlanScreen mit Bottom-Navigation
 
-Compose Navigation mit `NavController` und typed Route-Klassen (Kotlin Serialization oder sealed class).
+**Planwechsel:** Über PlanListScreen (Back-Button aus PlanScreen). Kein
+`activePlanId`-Switching innerhalb des PlanScreen — der User navigiert
+explizit zurück zur Liste.
+
+Compose Navigation mit `NavController` und typed Route-Klassen (sealed class).
 Back-Stack wird von Compose Navigation verwaltet — kein manuelles Stack-Management.
 
 ---
@@ -343,9 +379,66 @@ Play Store als zweiter Schritt — parallel zur Vorbereitung des Flowwalker-Laun
 
 ---
 
-## Offene Entscheidungen (v1.0)
+## JSON-Backup
 
-- Mehrere Pläne pro App oder strikt ein aktiver Plan?
-- JSON-Backup/Restore über Android SAF?
-- Englische Lokalisierung ab v1.0 oder erst v1.1?
-- Pflanzenbibliothek erweiterbar durch User (manuell importierbare JSON-Templates)?
+### Export (`PlanExporter.kt`)
+
+```kotlin
+fun exportPlan(plan: Plan, sections: List<SectionWithPlants>,
+               monthEntries: Map<Int, List<MonthEntry>>): String
+```
+
+Ausgabe: selbstdefiniertes JSON-Format:
+
+```json
+{
+  "version": 1,
+  "plan": { "title": "...", "year": 2026, "frostInfoLast": "...", ... },
+  "sections": [
+    {
+      "title": "🥬 Gemüse & Kräuter",
+      "order": 0,
+      "plants": [
+        {
+          "name": "Tomaten",
+          "subtitle": "Voranzucht",
+          "order": 0,
+          "months": [
+            { "month": 2, "type": "VORANZUCHT", "label": "Voranz." },
+            { "month": 4, "type": "AUSPFLANZEN", "label": "Auspfl." }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+IDs werden **nicht exportiert** — beim Import werden neue IDs generiert.
+Das macht Backups portierbar (andere Installationen, Jahr-Kopie).
+
+### Import (`PlanImporter.kt`)
+
+```kotlin
+suspend fun importPlan(json: String): Result<Int>  // gibt neue Plan-ID zurück
+```
+
+- Parst JSON mit `org.json.JSONObject` (AOSP, keine externe Lib)
+- Validiert `version`-Feld
+- Legt neuen Plan an (kein Überschreiben)
+- Gibt bei Fehler `Result.failure` mit lesbarer Fehlermeldung zurück
+
+### SAF-Integration
+
+Export: `Intent(Intent.ACTION_CREATE_DOCUMENT)` → User wählt Speicherort
+Import: `Intent(Intent.ACTION_OPEN_DOCUMENT)` → User wählt `.json`-Datei
+
+Trigger im SettingsScreen ("Backup exportieren" / "Backup importieren").
+
+---
+
+## Offene Punkte (für spätere Versionen)
+
+- Pflanzenbibliothek durch Community erweiterbare JSON-Templates?
+- Englische Lokalisierung (v1.1 — strings.xml von Anfang an gepflegt)
+- Landscape-Ansatz auf Tablet (v2.0)

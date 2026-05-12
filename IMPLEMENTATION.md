@@ -6,6 +6,11 @@
 > Abhängigkeiten fließen immer von oben nach unten — keine Session setzt
 > etwas voraus das noch nicht fertig ist.
 
+**Entschiedene Design-Fragen:**
+- Mehrere Pläne (ein Plan pro Jahr), PlanListScreen als Start-Destination
+- JSON-Backup/Restore via Android SAF (in Session 11)
+- v1.0 nur Deutsch — alle Strings in `strings.xml`, kein Hardcoding in Compose
+
 ---
 
 ## Übersicht
@@ -15,14 +20,14 @@
 | 1 | Gradle-Setup + Theme | App baut, Farben und Fonts korrekt |
 | 2 | Datenmodell + Room | DAO-Unit-Tests grün |
 | 3 | Repositories + Pflanzenbibliothek | ~40 Pflanzen, Repository-Flows testbar |
-| 4 | Navigation + Screen-Shells | Zwischen allen Screens navigierbar |
-| 5 | PlanScreen — Anzeige | Plan-Daten sichtbar, Demo-Daten geseeded |
+| 4 | Navigation + Screen-Shells | Alle Screens erreichbar inkl. PlanListScreen |
+| 5 | PlanListScreen + PlanScreen Anzeige | Pläne auflistbar, Demo-Plan sichtbar |
 | 6 | EditPlantScreen + BottomSheet | Pflanzen anlegen und bearbeiten, persistiert |
 | 7 | PlanScreen — CRUD + Drag & Drop | Vollständiges Bearbeiten/Löschen/Umsortieren |
 | 8 | PlantPickerScreen + EditSectionScreen | Bibliothek durchsuchbar, Sections verwaltbar |
-| 9 | SettingsScreen + First-Launch-Seeding | Metadaten editierbar, sinnvoller Demo-Plan |
+| 9 | SettingsScreen + Planverwaltung | Metadaten editierbar, neuer Plan aus Einstellungen |
 | 10 | HtmlExporter + PDF-Export | Drucktaste → A4-PDF im System-Dialog |
-| 11 | Polish + Release-Vorbereitung | Release-APK, F-Droid-Metadaten |
+| 11 | JSON-Backup + Polish + Release | Backup/Restore, Release-APK, F-Droid-Metadaten |
 
 ---
 
@@ -355,15 +360,16 @@ Unit-Test (JVM, kein Gerät nötig):
 
 ## Session 4 — Navigation + Screen-Shells
 
-**Ziel:** Alle 5 Screens sind erreichbar. Bottom-Nav schaltet korrekt.
-Kein Crash, kein leerer Back-Stack.
+**Ziel:** Alle 6 Screens sind erreichbar. PlanListScreen ist Start-Destination.
+Bottom-Nav erscheint nur innerhalb des PlanScreen-Kontexts. Kein Crash.
 
 ### Dateien
 
 ```
-├── MainActivity.kt          — NavHost + BottomNavigation + WebView-Holder
+├── MainActivity.kt                   — NavHost + WebView-Holder
 └── ui/
-    ├── plan/PlanScreen.kt          — Placeholder: "PlanScreen"
+    ├── planlist/PlanListScreen.kt    — Placeholder: "PlanListScreen"
+    ├── plan/PlanScreen.kt            — Placeholder mit BottomNav-Shell
     ├── editplant/EditPlantScreen.kt
     ├── plantpicker/PlantPickerScreen.kt
     ├── editsection/EditSectionScreen.kt
@@ -374,60 +380,64 @@ Kein Crash, kein leerer Back-Stack.
 
 ```kotlin
 sealed class Screen(val route: String) {
-    // Bottom-Nav-Tabs (kein Argument)
-    data object Plan        : Screen("plan")
-    data object Library     : Screen("library")
-    data object Settings    : Screen("settings")
+    // Root
+    data object PlanList    : Screen("plan_list")
 
-    // Pushed Screens (mit optionalem Argument)
-    data class EditPlant(val plantId: Int? = null) : Screen("edit_plant?id={id}") {
-        companion object { const val ROUTE = "edit_plant?id={id}" }
+    // Bottom-Nav-Tabs innerhalb eines Plans (tragen planId)
+    data class Plan(val planId: Int)     : Screen("plan/{planId}") {
+        companion object { const val ROUTE = "plan/{planId}" }
     }
-    data class EditSection(val sectionId: Int? = null) : Screen("edit_section?id={id}") {
-        companion object { const val ROUTE = "edit_section?id={id}" }
+    data class Library(val planId: Int)  : Screen("library/{planId}") {
+        companion object { const val ROUTE = "library/{planId}" }
     }
-    data object PlantPicker : Screen("plant_picker")
+    data class Settings(val planId: Int) : Screen("settings/{planId}") {
+        companion object { const val ROUTE = "settings/{planId}" }
+    }
+
+    // Pushed Screens
+    data object EditPlant   : Screen("edit_plant?planId={planId}&plantId={plantId}") {
+        companion object { const val ROUTE = "edit_plant?planId={planId}&plantId={plantId}" }
+    }
+    data object EditSection : Screen("edit_section?planId={planId}&sectionId={sectionId}") {
+        companion object { const val ROUTE = "edit_section?planId={planId}&sectionId={sectionId}" }
+    }
+    data object PlantPicker : Screen("plant_picker/{planId}") {
+        companion object { const val ROUTE = "plant_picker/{planId}" }
+    }
 }
 ```
 
 ### NavGraph-Struktur
 
 ```kotlin
-NavHost(navController, startDestination = Screen.Plan.route) {
-    composable(Screen.Plan.route)     { PlanScreen(navController) }
-    composable(Screen.Library.route)  { PlantPickerScreen(navController, standalone = true) }
-    composable(Screen.Settings.route) { SettingsScreen(navController) }
+NavHost(navController, startDestination = Screen.PlanList.route) {
 
-    composable(
-        route = Screen.EditPlant.ROUTE,
-        arguments = listOf(navArgument("id") { nullable = true; type = NavType.StringType })
-    ) { backStackEntry ->
-        val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-        EditPlantScreen(navController, plantId = id)
-    }
+    composable(Screen.PlanList.route) { PlanListScreen(navController) }
 
-    composable(Screen.PlantPicker.route) { PlantPickerScreen(navController, standalone = false) }
+    // Plan-Kontext: Bottom-Nav-Shell mit 3 Tabs
+    composable(Screen.Plan.ROUTE)     { PlanScreen(navController, planId) }
+    composable(Screen.Library.ROUTE)  { PlantPickerScreen(navController, planId, standalone = true) }
+    composable(Screen.Settings.ROUTE) { SettingsScreen(navController, planId) }
 
-    composable(
-        route = Screen.EditSection.ROUTE,
-        arguments = listOf(navArgument("id") { nullable = true; type = NavType.StringType })
-    ) { backStackEntry ->
-        val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-        EditSectionScreen(navController, sectionId = id)
-    }
+    // Pushed (kein Bottom-Nav)
+    composable(Screen.EditPlant.ROUTE)   { EditPlantScreen(navController, planId, plantId) }
+    composable(Screen.PlantPicker.ROUTE) { PlantPickerScreen(navController, planId, standalone = false) }
+    composable(Screen.EditSection.ROUTE) { EditSectionScreen(navController, planId, sectionId) }
 }
 ```
 
-### Bottom-Navigation
+Die Bottom-Navigation ist in einem gemeinsamen `PlanScaffold`-Composable
+gekapselt das alle drei Tab-Screens wrappen — so erscheint sie nur innerhalb
+des Plan-Kontexts, nicht auf PlanListScreen oder pushed Screens.
 
-Drei Tabs: **Plan · Bibliothek · Einstellungen**
-Aktiver Tab wird über `currentBackStackEntry` bestimmt.
+### Bottom-Navigation (Plan-Kontext)
+
+Drei Tabs: **Plan · Bibliothek · Einstellungen** — alle mit `planId` im Argument.
 `saveState = true` + `restoreState = true` beim Tabwechsel.
 
 ### WebView-Holder in `MainActivity`
 
 ```kotlin
-// WebView wird EINMALIG angelegt und gehalten — nie in Compose
 class MainActivity : ComponentActivity() {
     lateinit var printWebView: WebView
         private set
@@ -436,7 +446,7 @@ class MainActivity : ComponentActivity() {
         printWebView = WebView(this).apply {
             settings.javaScriptEnabled = false
         }
-        // WebView wird nicht in den View-Tree eingefügt
+        // Nicht in den View-Tree eingefügt — nur für PrintManager genutzt
     }
 }
 ```
@@ -445,22 +455,29 @@ Zugriff im Exporter (Session 10) über `LocalContext.current as MainActivity`.
 
 ### Testbares Ergebnis
 
-Manuell: Alle 3 Bottom-Tabs tippen → kein Crash.
-EditPlantScreen öffnen (mit und ohne ID) → kein Crash.
-Back-Button → korrekte Zurücknavigation.
-Screen-Shells zeigen Placeholder-Text.
+Manuell:
+- App-Start → PlanListScreen (Placeholder)
+- Plan antippen → PlanScreen mit Bottom-Nav sichtbar
+- Alle 3 Tabs schalten korrekt
+- EditPlantScreen öffnen → Bottom-Nav verschwindet
+- Back → Bottom-Nav wieder sichtbar
+- Zurück von PlanScreen → PlanListScreen, keine Bottom-Nav
 
 ---
 
-## Session 5 — PlanScreen Anzeige
+## Session 5 — PlanListScreen + PlanScreen Anzeige
 
-**Ziel:** Ein realer Plan wird aus Room geladen und korrekt dargestellt.
-Alle UI-Elemente aus dem Mockup sind vorhanden. Demo-Daten werden
-beim ersten App-Start automatisch eingefügt.
+**Ziel:** Pläne können aufgelistet und geöffnet werden. Ein realer Plan wird
+aus Room geladen und korrekt dargestellt. Demo-Daten werden beim ersten
+App-Start automatisch eingefügt.
 
 ### Dateien
 
 ```
+ui/planlist/
+├── PlanListScreen.kt
+└── PlanListViewModel.kt
+
 ui/plan/
 ├── PlanScreen.kt
 ├── PlanViewModel.kt
@@ -469,6 +486,39 @@ ui/plan/
     ├── PlantRow.kt
     └── SectionHeader.kt
 ```
+
+### `PlanListScreen.kt`
+
+```kotlin
+// Layout:
+// TopAppBar: "Meine Gartenpläne" + "+" rechts (→ neuen Plan anlegen)
+// LazyColumn der Pläne, sortiert nach year descending:
+//   PlanCard: Jahr (groß) + Titel + Anzahl Pflanzen
+//   Tap → navController.navigate(Screen.Plan(plan.id))
+// Empty State: "Noch kein Plan. Tippe auf + um zu beginnen."
+```
+
+```kotlin
+data class PlanListUiState(
+    val plans: List<Plan> = emptyList(),
+    val isLoading: Boolean = true
+)
+
+class PlanListViewModel(private val repo: PlanRepository) : ViewModel() {
+    val uiState: StateFlow<PlanListUiState> = repo.getAllPlans()
+        .map { PlanListUiState(plans = it.sortedByDescending { p -> p.year }, isLoading = false) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PlanListUiState())
+
+    suspend fun createPlan(year: Int, title: String): Int  // gibt planId zurück
+    suspend fun deletePlan(plan: Plan)
+}
+```
+
+Neuer Plan anlegen: `AlertDialog` mit Jahr-Feld und Titel-Feld → `createPlan()` →
+direkt zu `PlanScreen(newPlanId)` navigieren.
+
+Plan löschen: Swipe-to-dismiss auf PlanCard + Bestätigungsdialog
+("Plan und alle Pflanzen unwiderruflich löschen?").
 
 ### `PlanViewModel.kt`
 
@@ -803,11 +853,11 @@ Manuell:
 
 ---
 
-## Session 9 — SettingsScreen + First-Launch-Seeding
+## Session 9 — SettingsScreen + Planverwaltung
 
-**Ziel:** Plan-Metadaten (Titel, Jahr, Frostdaten, Klimazone) sind editierbar
-und fließen sofort in TopAppBar und PDF-Export. Der Demo-Plan beim ersten
-Start ist vollständig und zeigt die App-Stärken.
+**Ziel:** Plan-Metadaten sind editierbar und fließen sofort in TopAppBar und
+PDF-Export. Der SettingsScreen ermöglicht auch Plan-Kopie (Jahreswechsel)
+und Löschen. Der Demo-Plan beim ersten Start ist vollständig.
 
 ### Dateien
 
@@ -841,7 +891,7 @@ class SettingsViewModel(private val repo: PlanRepository) : ViewModel() {
 TopAppBar: "Einstellungen"
 ListItems (gruppiert):
 
-Gruppe "Mein Plan"
+Gruppe "Dieser Plan"
   ├── Plan-Titel  [Garten Brandenburg 2026]  →  Dialog: TextField + Bestätigen
   └── Planjahr    [2026]                     →  Dialog: NumberPicker o. TextField
 
@@ -850,6 +900,15 @@ Gruppe "Klima & Standort"
   ├── Erster Herbstfrost  [~15. Oktober]     →  Dialog: TextField
   └── Klimazone / Boden   [7a · Lehmboden]   →  Dialog: TextField (optional)
 
+Gruppe "Planverwaltung"
+  ├── Plan kopieren für nächstes Jahr  →  Dialog: neues Jahr eingeben → Plan kopieren
+  │   (Struktur: Sections + Pflanzen + Monats-Einträge werden 1:1 übernommen)
+  └── Diesen Plan löschen              →  AlertDialog mit Warnung → PlanListScreen
+
+Gruppe "Datensicherung"                        (Implementierung in Session 11)
+  ├── Als JSON exportieren  →  SAF Intent ACTION_CREATE_DOCUMENT
+  └── Aus JSON importieren  →  SAF Intent ACTION_OPEN_DOCUMENT
+
 Gruppe "Export"
   └── Plan drucken / Als PDF  →  Aufruf des PDF-Exports (Session 10)
 
@@ -857,7 +916,22 @@ Gruppe "App"
   └── Version  [1.0.0 · GPL-3.0 · Open Source]  (read-only)
 ```
 
-Änderungen werden sofort in die DB geschrieben (kein "Speichern"-Button auf Ebene des Screens).
+Änderungen werden sofort in die DB geschrieben (kein "Speichern"-Button auf Screen-Ebene).
+
+### Plan kopieren (Jahreswechsel)
+
+```kotlin
+suspend fun copyPlanForYear(sourcePlanId: Int, newYear: Int): Int {
+    // 1. Neuen Plan anlegen (gleiches title/frost/climate, neues year)
+    // 2. Sections kopieren (neue IDs)
+    // 3. Plants kopieren (neue IDs, neue sectionId-Referenzen)
+    // 4. MonthEntries kopieren (neue IDs, neue plantId-Referenzen)
+    // 5. Neue planId zurückgeben → direkt zu PlanScreen(newPlanId) navigieren
+}
+```
+
+Alle Monats-Einträge werden übernommen — der User passt Abweichungen danach an.
+Das entspricht dem Konzept "Planungsbuch für das neue Jahr aus dem Vorjahr kopieren".
 
 ### Verbesserter Demo-Plan
 
@@ -1026,10 +1100,68 @@ Manuell (Gerät mit physischem oder virtuellem Drucker):
 
 ---
 
-## Session 11 — Polish + Release-Vorbereitung
+## Session 11 — JSON-Backup + Polish + Release
 
-**Ziel:** Release-fähiges APK. F-Droid-Metadaten vorhanden. Keine Abstürze
-bei Edge-Cases. App-Icon gesetzt.
+**Ziel:** JSON-Backup/Restore funktioniert. Release-fähiges APK. F-Droid-Metadaten
+vorhanden. Keine Abstürze bei Edge-Cases. App-Icon gesetzt.
+
+### JSON-Backup (PlanExporter + PlanImporter)
+
+```
+data/backup/
+├── PlanExporter.kt    — Plan → JSON-String (org.json.JSONObject, keine externe Lib)
+└── PlanImporter.kt    — JSON-String → Room (neue IDs, kein Überschreiben)
+```
+
+**Export-Flow:**
+```kotlin
+// In SettingsViewModel:
+fun exportPlan(planId: Int, uri: Uri) {
+    val json = PlanExporter.export(plan, sections, monthEntries)
+    context.contentResolver.openOutputStream(uri)?.use { it.write(json.toByteArray()) }
+}
+```
+
+**Import-Flow:**
+```kotlin
+// PlanImporter.import() gibt Result<Int> zurück (neue planId oder Fehler)
+// Bei Erfolg: direkt zu PlanScreen(newPlanId) navigieren
+// Bei Fehler: Snackbar mit lesbarer Fehlermeldung
+```
+
+**JSON-Format** (self-contained, portierbar — keine IDs):
+```json
+{
+  "version": 1,
+  "plan": { "title": "...", "year": 2026, "frostInfoLast": "...",
+            "frostInfoFirst": "...", "climateZone": "..." },
+  "sections": [
+    { "title": "🥬 Gemüse & Kräuter", "order": 0,
+      "plants": [
+        { "name": "Tomaten", "subtitle": "Voranzucht", "order": 0,
+          "months": [
+            { "month": 2, "type": "VORANZUCHT", "label": "Voranz." }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Parser: `org.json.JSONObject` (AOSP, kein Gradle-Dependency nötig).
+Validierung: `version`-Feld prüfen, Pflichtfelder auf null checken,
+bei Fehler `Result.failure(IllegalArgumentException("Ungültige Backup-Datei: ..."))`.
+
+SAF-Integration in `MainActivity`:
+```kotlin
+val exportLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+    uri?.let { settingsViewModel.exportPlan(activePlanId, it) }
+}
+val importLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+    uri?.let { settingsViewModel.importPlan(it) }
+}
+```
 
 ### Empty States
 
@@ -1117,9 +1249,11 @@ fastlane/metadata/android/
 [ ] Keine proprietären Google-Libraries (nur AOSP/Jetpack)
 [ ] Fonts gebündelt (nicht downloadable)
 [ ] Keine INTERNET-Permission in AndroidManifest.xml
+[ ] READ_EXTERNAL_STORAGE / WRITE_EXTERNAL_STORAGE nicht nötig (SAF verwendet URIs)
 [ ] exportSchema=true, schemas/ committed
 [ ] GPL-3.0 LICENSE-Datei im Root
 [ ] CHANGELOG.md mit v1.0-Eintrag
+[ ] JSON-Backup/Restore manuell getestet (Export → Neuinstallation → Import)
 [ ] Release-APK signiert (Keystore sicher verwahrt)
 [ ] APK mit apksigner verifiziert
 [ ] F-Droid-Metadaten vollständig
@@ -1143,31 +1277,15 @@ S1 (Setup/Theme)
   └── S2 (Datenmodell/Room)
         └── S3 (Repositories/Bibliothek)
               └── S4 (Navigation/Shells)
-                    ├── S5 (PlanScreen Anzeige)
-                    │     ├── S6 (EditPlantScreen)
-                    │     │     └── S7 (PlanScreen CRUD)
-                    │     └── S9 (SettingsScreen)
-                    └── S8 (PlantPicker + EditSection)
+                    └── S5 (PlanListScreen + PlanScreen Anzeige)
+                          ├── S6 (EditPlantScreen)
+                          │     └── S7 (PlanScreen CRUD)
+                          ├── S8 (PlantPicker + EditSection)   ← parallel zu S6/S7 möglich
+                          └── S9 (SettingsScreen + Planverwaltung)
 
 S7 + S8 + S9 → S10 (PDF-Export)
-S10          → S11 (Polish + Release)
+S10          → S11 (JSON-Backup + Polish + Release)
 ```
 
-Sessions 8 und 9 können **parallel** bearbeitet werden (keine gegenseitige Abhängigkeit).
-Sessions 5, 6, 7 müssen **sequenziell** bleiben (aufbauend).
-
----
-
-## Offene Entscheidungen vor Beginn
-
-Diese Fragen müssen vor oder spätestens in Session 2 entschieden werden,
-da sie das Datenmodell beeinflussen:
-
-1. **Ein Plan oder mehrere?** — v1.0: ein aktiver Plan (einfacher, kein Plan-Switcher nötig).
-   Mehrere Pläne sind additive Erweiterung in v1.1 ohne Breaking Change.
-
-2. **JSON-Backup?** — v1.0: kein Backup. Daten liegen in Room, kein SAF-Aufwand.
-   Rücksicherung über Standard-App-Backup (Android Auto Backup) konfigurierbar.
-
-3. **Lokalisierung?** — v1.0: Deutsch. `strings.xml` von Anfang an konsequent
-   nutzen (kein hardgecodeter Text im Compose-Code) → macht EN-Lokalisierung trivial.
+Sessions 8 und 9 können **parallel** zu 6/7 bearbeitet werden.
+Sessions 5 → 6 → 7 müssen **sequenziell** bleiben.
