@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GartenPlaner</string>
+
+    <!-- PlanListScreen -->
+    <string name="plan_list_title">Meine Gartenpläne</string>
+    <string name="plan_list_empty_title">Noch kein Gartenplan</string>
+    <string name="plan_list_empty_body">Tippe auf + um deinen ersten Plan zu starten.</string>
+    <string name="plan_create_new">Neuen Plan anlegen</string>
+    <string name="plan_year_label">Planjahr</string>
+    <string name="plan_title_label">Titel</string>
+    <string name="plan_delete_confirm">Plan und alle Pflanzen unwiderruflich löschen?</string>
+
+    <!-- PlanScreen -->
+    <string name="plan_empty_sections_title">Keine Sections</string>
+    <string name="plan_empty_sections_body">Füge eine Section hinzu, z. B. „🥬 Gemüse &amp; Kräuter".</string>
+    <string name="plan_add_from_library">Aus Bibliothek wählen</string>
+    <string name="plan_add_manual">Manuell anlegen</string>
+    <string name="plan_add_section">Section hinzufügen</string>
+    <string name="plan_edit_mode">Bearbeiten</string>
+    <string name="plan_done">Fertig</string>
+    <string name="plan_print">Drucken / PDF</string>
+    <string name="plan_delete_section_confirm">Section und alle Pflanzen löschen?</string>
+    <string name="plan_plant_deleted">Pflanze gelöscht</string>
+    <string name="action_undo">Rückgängig</string>
+
+    <!-- EditPlantScreen -->
+    <string name="edit_plant_title_new">Neue Pflanze</string>
+    <string name="edit_plant_title_edit">Pflanze bearbeiten</string>
+    <string name="plant_name_label">Pflanzname</string>
+    <string name="plant_subtitle_label">Untertitel (optional)</string>
+    <string name="plant_section_label">Section</string>
+    <string name="plant_months_label">Aktivitäten pro Monat</string>
+    <string name="plant_month_hint">Tippe auf einen Monat um eine Aktivität festzulegen.</string>
+    <string name="action_save">Speichern</string>
+
+    <!-- ActivityTypeSheet -->
+    <string name="month_sheet_empty_option">Leer / nichts</string>
+    <string name="month_sheet_confirm">Übernehmen</string>
+    <string name="month_sheet_note_label">Was wird gepflegt?</string>
+    <string name="month_sheet_note_hint">z. B. Gießen, Düngen, Schneiden …</string>
+
+    <!-- ActivityType labels -->
+    <string name="activity_voranzucht">Voranzucht</string>
+    <string name="activity_direktsaat">Direktsaat</string>
+    <string name="activity_auspflanzen">Auspflanzen</string>
+    <string name="activity_ernte">Ernte</string>
+    <string name="activity_pflege">Pflege</string>
+
+    <!-- PlantPickerScreen -->
+    <string name="library_title">Pflanzenbibliothek</string>
+    <string name="library_search_hint">Pflanze suchen …</string>
+    <string name="library_filter_all">Alle</string>
+    <string name="library_empty">Keine Treffer</string>
+
+    <!-- EditSectionScreen -->
+    <string name="edit_section_title_new">Neue Section</string>
+    <string name="edit_section_title_edit">Section umbenennen</string>
+    <string name="section_name_label">Name (Emoji erlaubt)</string>
+    <string name="section_name_hint">z. B. 🥬 Gemüse &amp; Kräuter</string>
+
+    <!-- SettingsScreen -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_group_plan">Dieser Plan</string>
+    <string name="settings_group_climate">Klima &amp; Standort</string>
+    <string name="settings_group_management">Planverwaltung</string>
+    <string name="settings_group_backup">Datensicherung</string>
+    <string name="settings_group_export">Export</string>
+    <string name="settings_group_app">App</string>
+    <string name="settings_plan_title">Plan-Titel</string>
+    <string name="settings_plan_year">Planjahr</string>
+    <string name="settings_frost_last">Letzter Spätfrost</string>
+    <string name="settings_frost_first">Erster Herbstfrost</string>
+    <string name="settings_climate_zone">Klimazone / Boden</string>
+    <string name="settings_climate_zone_optional">(optional)</string>
+    <string name="settings_copy_plan">Plan kopieren für nächstes Jahr</string>
+    <string name="settings_delete_plan">Diesen Plan löschen</string>
+    <string name="settings_backup_export">Als JSON exportieren</string>
+    <string name="settings_backup_import">Aus JSON importieren</string>
+    <string name="settings_print">Plan drucken / Als PDF</string>
+    <string name="settings_print_format">A4 Querformat</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_copy_year_hint">Neues Jahr eingeben</string>
+    <string name="settings_copy_confirm">Kopieren</string>
+    <string name="backup_export_filename">GartenPlan_%1$d.json</string>
+    <string name="backup_import_error">Ungültige Backup-Datei</string>
+    <string name="backup_import_success">Plan importiert</string>
+
+    <!-- Month names -->
+    <string-array name="months_short">
+        <item>Jan</item><item>Feb</item><item>Mär</item><item>Apr</item>
+        <item>Mai</item><item>Jun</item><item>Jul</item><item>Aug</item>
+        <item>Sep</item><item>Okt</item><item>Nov</item><item>Dez</item>
+    </string-array>
+    <string-array name="months_long">
+        <item>Januar</item><item>Februar</item><item>März</item><item>April</item>
+        <item>Mai</item><item>Juni</item><item>Juli</item><item>August</item>
+        <item>September</item><item>Oktober</item><item>November</item><item>Dezember</item>
+    </string-array>
+
+    <!-- Navigation tabs -->
+    <string name="nav_plan">Plan</string>
+    <string name="nav_library">Bibliothek</string>
+    <string name="nav_settings">Einstellungen</string>
+
+    <!-- Common -->
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_confirm">Bestätigen</string>
+    <string name="action_back">Zurück</string>
+</resources>

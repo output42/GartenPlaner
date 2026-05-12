@@ -1,0 +1,22 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Gradle wrapper jar — wird über `./gradlew wrapper` generiert
+gradle/wrapper/gradle-wrapper.jar
+
+# Signing config — nie committen
+keystore.jks
+*.keystore
+keystore.properties
+
+# Font-Dateien — müssen manuell heruntergeladen werden (siehe res/font/FONTS.md)
+*.ttf
+*.otf
