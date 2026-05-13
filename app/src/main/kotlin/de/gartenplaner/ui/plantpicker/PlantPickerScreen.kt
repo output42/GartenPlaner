@@ -21,6 +21,8 @@ import de.gartenplaner.R
 import de.gartenplaner.data.model.PlantTemplate
 import de.gartenplaner.data.repository.LibraryRepository
 import de.gartenplaner.navigation.Screen
+import de.gartenplaner.ui.components.PlanBottomBar
+import de.gartenplaner.ui.components.PlanTab
 import de.gartenplaner.ui.plantpicker.components.MiniMonthDots
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +57,7 @@ fun PlantPickerScreen(
         },
         bottomBar = {
             if (standalone) {
-                // TODO Session 4: PlanBottomNavigation
+                PlanBottomBar(navController, planId, PlanTab.LIBRARY)
             }
         }
     ) { padding ->

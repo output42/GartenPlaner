@@ -19,6 +19,8 @@ import de.gartenplaner.R
 import de.gartenplaner.data.db.GardenDatabase
 import de.gartenplaner.data.repository.PlanRepository
 import de.gartenplaner.navigation.Screen
+import de.gartenplaner.ui.components.PlanBottomBar
+import de.gartenplaner.ui.components.PlanTab
 import de.gartenplaner.ui.plan.components.MonthChipRow
 import de.gartenplaner.ui.plan.components.SectionHeader
 
@@ -72,6 +74,11 @@ fun PlanScreen(navController: NavController, planId: Int) {
                     IconButton(onClick = { vm.toggleEditMode() }) {
                         Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.plan_edit_mode))
                     }
+                    IconButton(onClick = {
+                        navController.navigate(Screen.EditSection.route(planId))
+                    }) {
+                        Icon(Icons.Outlined.Add, contentDescription = stringResource(R.string.section_add))
+                    }
                     IconButton(onClick = { vm.triggerPrint() }) {
                         Icon(painterResource(R.drawable.ic_print), contentDescription = stringResource(R.string.plan_print))
                     }
@@ -91,7 +98,7 @@ fun PlanScreen(navController: NavController, planId: Int) {
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            PlanBottomNavigation(navController, planId)
+            PlanBottomBar(navController, planId, PlanTab.PLAN)
         },
     ) { padding ->
         when (val state = uiState) {
@@ -140,27 +147,3 @@ fun PlanScreen(navController: NavController, planId: Int) {
     }
 }
 
-@Composable
-private fun PlanBottomNavigation(navController: NavController, planId: Int) {
-    // TODO Session 4: NavigationBar mit Plan / Bibliothek / Einstellungen
-    NavigationBar {
-        NavigationBarItem(
-            selected = true,
-            onClick  = {},
-            icon     = {},
-            label    = { Text(stringResource(R.string.nav_plan)) },
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick  = { navController.navigate(Screen.Library.route(planId)) },
-            icon     = {},
-            label    = { Text(stringResource(R.string.nav_library)) },
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick  = { navController.navigate(Screen.Settings.route(planId)) },
-            icon     = {},
-            label    = { Text(stringResource(R.string.nav_settings)) },
-        )
-    }
-}

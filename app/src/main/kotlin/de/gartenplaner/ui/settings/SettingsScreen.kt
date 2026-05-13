@@ -15,6 +15,8 @@ import androidx.navigation.NavController
 import de.gartenplaner.R
 import de.gartenplaner.data.db.GardenDatabase
 import de.gartenplaner.data.repository.PlanRepository
+import de.gartenplaner.ui.components.PlanBottomBar
+import de.gartenplaner.ui.components.PlanTab
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +42,7 @@ fun SettingsScreen(navController: NavController, planId: Int) {
             )
         },
         bottomBar = {
-            // TODO Session 4: PlanBottomNavigation
+            PlanBottomBar(navController, planId, PlanTab.SETTINGS)
         }
     ) { padding ->
         if (plan == null) {

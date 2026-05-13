@@ -54,8 +54,9 @@
     <string name="library_empty">Keine Treffer</string>
 
     <!-- EditSectionScreen -->
-    <string name="edit_section_title_new">Neue Section</string>
-    <string name="edit_section_title_edit">Section umbenennen</string>
+    <string name="edit_section_title_new">Neuer Bereich</string>
+    <string name="edit_section_title_edit">Bereich umbenennen</string>
+    <string name="section_add">Bereich hinzufügen</string>
     <string name="section_name_label">Name (Emoji erlaubt)</string>
     <string name="section_name_hint">z. B. 🥬 Gemüse &amp; Kräuter</string>
 
