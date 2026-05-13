@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.material3.*
+import androidx.compose.ui.res.painterResource
+import de.gartenplaner.R
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +48,7 @@ fun MonthChipRow(
         ) {
             if (editMode) {
                 Icon(
-                    Icons.Outlined.DragHandle,
+                    painterResource(R.drawable.ic_drag_handle),
                     contentDescription = null,
                     modifier = Modifier.size(18.dp).padding(end = 4.dp),
                     tint = MaterialTheme.colorScheme.outline,

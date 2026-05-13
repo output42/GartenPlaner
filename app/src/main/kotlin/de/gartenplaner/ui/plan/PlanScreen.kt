@@ -5,8 +5,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Print
 import androidx.compose.material3.*
+import androidx.compose.ui.res.painterResource
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,7 +73,7 @@ fun PlanScreen(navController: NavController, planId: Int) {
                         Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.plan_edit_mode))
                     }
                     IconButton(onClick = { vm.triggerPrint() }) {
-                        Icon(Icons.Outlined.Print, contentDescription = stringResource(R.string.plan_print))
+                        Icon(painterResource(R.drawable.ic_print), contentDescription = stringResource(R.string.plan_print))
                     }
                 },
                 navigationIcon = {
