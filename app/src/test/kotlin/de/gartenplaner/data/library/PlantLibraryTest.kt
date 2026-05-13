@@ -1,5 +1,6 @@
 package de.gartenplaner.data.library
 
+import de.gartenplaner.data.repository.LibraryRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
