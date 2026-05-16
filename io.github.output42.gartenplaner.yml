@@ -1,9 +1,10 @@
-AutoName: GartenPlaner
 Categories:
   - Science & Education
 License: GPL-3.0-only
 SourceCode: https://github.com/output42/GartenPlaner
 IssueTracker: https://github.com/output42/GartenPlaner/issues
+
+AutoName: GartenPlaner
 
 RepoType: git
 Repo: https://github.com/output42/GartenPlaner
