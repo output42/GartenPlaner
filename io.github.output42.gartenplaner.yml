@@ -1,8 +1,7 @@
+AutoName: GartenPlaner
 Categories:
   - Science & Education
-
 License: GPL-3.0-only
-
 SourceCode: https://github.com/output42/GartenPlaner
 IssueTracker: https://github.com/output42/GartenPlaner/issues
 
@@ -15,7 +14,7 @@ Builds:
     commit: v1.0.0
     subdir: app
     gradle:
-      - release
+      - yes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
