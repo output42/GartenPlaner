@@ -17,7 +17,6 @@ Builds:
     gradle:
       - yes
 
-Binaries: https://github.com/output42/GartenPlaner/releases/download/v%v/GartenPlaner-%v.apk
 AllowedAPKSigningKeys: 4b5622f24185cd6073c6794a1bc071f47d5391943f0d8dbd53746a14fecaac0a
 
 AutoUpdateMode: Version
