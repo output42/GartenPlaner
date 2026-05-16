@@ -12,10 +12,13 @@ Repo: https://github.com/output42/GartenPlaner
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0
+    commit: 618e5e9d37177f4bddc4aea565e192e1f84cad19
     subdir: app
     gradle:
       - yes
+
+Binaries: https://github.com/output42/GartenPlaner/releases/download/v%v/GartenPlaner-%v.apk
+AllowedAPKSigningKeys: 4b5622f24185cd6073c6794a1bc071f47d5391943f0d8dbd53746a14fecaac0a
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
