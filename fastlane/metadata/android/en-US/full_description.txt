@@ -1,0 +1,21 @@
+GartenPlaner is an offline-first Android app for year-based garden planning.
+
+Plan your garden year in a clear calendar view: which plant is sown, transplanted, harvested, or cared for in which month? The monthly overview shows all activities at a glance — color-coded by activity type.
+
+Features:
+- Multiple garden plans (one plan per year)
+- Plant library with 37+ entries in 6 categories (fruiting vegetables, root vegetables, leafy greens, herbs, legumes, onions & leeks)
+- Add and edit custom plants manually
+- Sections for structuring your plan (e.g. "Vegetables", "Herbs")
+- Climate zone and frost data per plan
+- PDF export via Android print dialog (A4 landscape)
+- JSON backup and restore via file storage
+- Copy a plan to the next year
+
+Privacy:
+- No internet connection required
+- No ads, no tracking
+- No Google services
+- All data stays on your device
+
+Source code: GPL-3.0, available at https://github.com/output42/GartenPlaner

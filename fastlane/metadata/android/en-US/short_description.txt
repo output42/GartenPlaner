@@ -1,0 +1,1 @@
+Year-based garden planner with plant library and PDF export — fully offline.

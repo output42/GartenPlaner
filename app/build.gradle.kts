@@ -10,7 +10,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "de.gartenplaner"
+        applicationId = "io.github.output42.gartenplaner"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

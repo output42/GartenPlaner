@@ -1,0 +1,1 @@
+First release: year planner, plant library (37+ entries), PDF export, JSON backup/restore.
