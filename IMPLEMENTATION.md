@@ -15,19 +15,19 @@
 
 ## Übersicht
 
-| # | Session | Ergebnis |
-|---|---|---|
-| 1 | Gradle-Setup + Theme | App baut, Farben und Fonts korrekt |
-| 2 | Datenmodell + Room | DAO-Unit-Tests grün |
-| 3 | Repositories + Pflanzenbibliothek | ~40 Pflanzen, Repository-Flows testbar |
-| 4 | Navigation + Screen-Shells | Alle Screens erreichbar inkl. PlanListScreen |
-| 5 | PlanListScreen + PlanScreen Anzeige | Pläne auflistbar, Demo-Plan sichtbar |
-| 6 | EditPlantScreen + BottomSheet | Pflanzen anlegen und bearbeiten, persistiert |
-| 7 | PlanScreen — CRUD + Drag & Drop | Vollständiges Bearbeiten/Löschen/Umsortieren |
-| 8 | PlantPickerScreen + EditSectionScreen | Bibliothek durchsuchbar, Sections verwaltbar |
-| 9 | SettingsScreen + Planverwaltung | Metadaten editierbar, neuer Plan aus Einstellungen |
-| 10 | HtmlExporter + PDF-Export | Drucktaste → A4-PDF im System-Dialog |
-| 11 | JSON-Backup + Polish + Release | Backup/Restore, Release-APK, F-Droid-Metadaten |
+| # | Session | Ergebnis | Status |
+|---|---|---|---|
+| 1 | Gradle-Setup + Theme | App baut, Farben und Fonts korrekt | ✅ abgeschlossen |
+| 2 | Datenmodell + Room | DAO-Unit-Tests grün | ✅ abgeschlossen |
+| 3 | Repositories + Pflanzenbibliothek | ~40 Pflanzen, Repository-Flows testbar | ✅ abgeschlossen |
+| 4 | Navigation + Screen-Shells | Alle Screens erreichbar inkl. PlanListScreen | ✅ abgeschlossen |
+| 5 | PlanListScreen + PlanScreen Anzeige | Pläne auflistbar, Demo-Plan sichtbar | ✅ abgeschlossen |
+| 6 | EditPlantScreen + BottomSheet | Pflanzen anlegen und bearbeiten, persistiert | |
+| 7 | PlanScreen — CRUD + Drag & Drop | Vollständiges Bearbeiten/Löschen/Umsortieren | |
+| 8 | PlantPickerScreen + EditSectionScreen | Bibliothek durchsuchbar, Sections verwaltbar | ✅ abgeschlossen |
+| 9 | SettingsScreen + Planverwaltung | Metadaten editierbar, neuer Plan aus Einstellungen | |
+| 10 | HtmlExporter + PDF-Export | Drucktaste → A4-PDF im System-Dialog | |
+| 11 | JSON-Backup + Polish + Release | Backup/Restore, Release-APK, F-Droid-Metadaten | |
 
 ---
 

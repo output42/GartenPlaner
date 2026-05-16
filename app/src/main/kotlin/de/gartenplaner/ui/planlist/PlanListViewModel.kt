@@ -7,28 +7,41 @@ import de.gartenplaner.data.model.Plan
 import de.gartenplaner.data.repository.PlanRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 sealed interface PlanListUiState {
     data object Loading : PlanListUiState
     data object Empty   : PlanListUiState
-    data class  Success(val plans: List<Plan>) : PlanListUiState
+    data class  Success(
+        val plans       : List<Plan>,
+        val plantCounts : Map<Int, Int> = emptyMap(),
+    ) : PlanListUiState
 }
 
 class PlanListViewModel(private val repo: PlanRepository) : ViewModel() {
 
-    val uiState: StateFlow<PlanListUiState> = repo.getAllPlans()
-        .map { plans ->
-            if (plans.isEmpty()) PlanListUiState.Empty
-            else PlanListUiState.Success(plans)
+    val uiState: StateFlow<PlanListUiState> = combine(
+        repo.getAllPlans(),
+        repo.getPlanPlantCounts(),
+    ) { plans, counts ->
+        if (plans.isEmpty()) {
+            PlanListUiState.Empty
+        } else {
+            PlanListUiState.Success(
+                plans       = plans.sortedByDescending { it.year },
+                plantCounts = counts.associate { it.planId to it.plantCount },
+            )
         }
-        .stateIn(
-            scope             = viewModelScope,
-            started           = SharingStarted.WhileSubscribed(5_000),
-            initialValue      = PlanListUiState.Loading,
-        )
+    }
+    .onEach { cachedState = it }
+    .stateIn(
+        scope        = viewModelScope,
+        started      = SharingStarted.WhileSubscribed(30_000),
+        initialValue = cachedState,
+    )
 
     fun createPlan(year: Int, title: String, onCreated: (Int) -> Unit) {
         viewModelScope.launch {
@@ -45,5 +58,10 @@ class PlanListViewModel(private val repo: PlanRepository) : ViewModel() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
             PlanListViewModel(repo) as T
+    }
+
+    companion object {
+        // Überlebt ViewModel-Neuanlage nach Prozess-Restore oder seltenen Stack-Recreations
+        @Volatile private var cachedState: PlanListUiState = PlanListUiState.Loading
     }
 }

@@ -34,7 +34,7 @@ object PlanImporter {
 
         val sectionsArr = root.getJSONArray("sections")
         for (si in 0 until sectionsArr.length()) {
-            val secObj = sectionsArr.getJSONObject(si)
+            val secObj    = sectionsArr.getJSONObject(si)
             val sectionId = db.sectionDao().upsert(
                 Section(
                     planId = planId,
@@ -45,32 +45,50 @@ object PlanImporter {
 
             val plantsArr = secObj.getJSONArray("plants")
             for (pi in 0 until plantsArr.length()) {
-                val plantObj = plantsArr.getJSONObject(pi)
-                val plantId = db.plantDao().upsert(
-                    Plant(
-                        sectionId = sectionId,
-                        name      = plantObj.getString("name"),
-                        subtitle  = plantObj.optString("subtitle"),
-                        order     = plantObj.optInt("order", pi),
-                    )
-                ).toInt()
+                importPlant(plantsArr.getJSONObject(pi), planId, sectionId, pi, db)
+            }
+        }
 
-                val monthsArr = plantObj.getJSONArray("months")
-                val entries = buildList {
-                    for (mi in 0 until monthsArr.length()) {
-                        val mo = monthsArr.getJSONObject(mi)
-                        add(MonthEntry(
-                            plantId = plantId,
-                            month   = mo.getInt("month"),
-                            type    = ActivityType.valueOf(mo.getString("type")),
-                            label   = mo.getString("label"),
-                        ))
-                    }
-                }
-                db.monthEntryDao().upsertAll(entries)
+        val unsectionedArr = root.optJSONArray("unsectioned_plants")
+        if (unsectionedArr != null) {
+            for (pi in 0 until unsectionedArr.length()) {
+                importPlant(unsectionedArr.getJSONObject(pi), planId, sectionId = null, pi, db)
             }
         }
 
         planId
+    }
+
+    private suspend fun importPlant(
+        plantObj : org.json.JSONObject,
+        planId   : Int,
+        sectionId: Int?,
+        order    : Int,
+        db       : GardenDatabase,
+    ) {
+        val plantId = db.plantDao().upsert(
+            Plant(
+                planId    = planId,
+                sectionId = sectionId,
+                name      = plantObj.getString("name"),
+                subtitle  = plantObj.optString("subtitle"),
+                order     = plantObj.optInt("order", order),
+            )
+        ).toInt()
+
+        val monthsArr = plantObj.getJSONArray("months")
+        val entries = buildList {
+            for (mi in 0 until monthsArr.length()) {
+                val mo = monthsArr.getJSONObject(mi)
+                add(MonthEntry(
+                    plantId = plantId,
+                    planId  = planId,
+                    month   = mo.getInt("month"),
+                    type    = ActivityType.valueOf(mo.getString("type")),
+                    label   = mo.getString("label"),
+                ))
+            }
+        }
+        db.monthEntryDao().upsertAll(entries)
     }
 }

@@ -10,6 +10,13 @@
     <string name="plan_year_label">Planjahr</string>
     <string name="plan_title_label">Titel</string>
     <string name="plan_delete_confirm">Plan und alle Pflanzen unwiderruflich löschen?</string>
+    <string name="plan_title_default">Mein Garten</string>
+    <string name="plan_title_hint">z. B. Mein Garten</string>
+    <string name="plan_year_invalid">Ungültiges Jahr</string>
+    <plurals name="plant_count">
+        <item quantity="one">1 Pflanze</item>
+        <item quantity="other">%d Pflanzen</item>
+    </plurals>
 
     <!-- PlanScreen -->
     <string name="plan_empty_sections_title">Keine Sections</string>
@@ -54,6 +61,7 @@
     <string name="library_empty">Keine Treffer</string>
 
     <!-- EditSectionScreen -->
+    <string name="plant_section_none">Kein Bereich</string>
     <string name="edit_section_title_new">Neuer Bereich</string>
     <string name="edit_section_title_edit">Bereich umbenennen</string>
     <string name="section_add">Bereich hinzufügen</string>
@@ -74,6 +82,20 @@
     <string name="settings_frost_first">Erster Herbstfrost</string>
     <string name="settings_climate_zone">Klimazone / Boden</string>
     <string name="settings_climate_zone_optional">(optional)</string>
+    <string name="settings_climate_dialog_title">Klimazone &amp; Bodenart</string>
+    <string name="settings_climate_zone_header">Klimazone</string>
+    <string name="settings_climate_estimate">Standort-Vorschlag: %1$s</string>
+    <string name="action_apply">Übernehmen</string>
+    <string name="settings_soil_type_header">Bodenart</string>
+    <string name="soil_info_title">Boden selbst bestimmen</string>
+    <string name="soil_info_lehmboden">Feuchte Erde zu einer dünnen Wurst formen: hält sie ohne zu reißen und fühlt sich glatt-plastisch an → Lehmboden.\n\nNährstoffreich, wasserhaltend, ideal für die meisten Gemüsearten. Kompaktiert bei zu frühem Bearbeiten.</string>
+    <string name="soil_info_sandboden">Feuchte Erde zusammendrücken und loslassen: zerfällt sie sofort, fühlt sich körnig-rau an und rieselt durch die Finger → Sandboden.\n\nErwärmt sich schnell im Frühjahr, trocknet aber rasch aus. Regelmäßig kompostieren und mulchen.</string>
+    <string name="soil_info_tonboden">Erde zu einer langen, dünnen Wurst formen: klappt sie problemlos, klebt stark und glänzt beim Reiben → Tonboden.\n\nNährstoffreich, neigt aber zur Staunässe und ist schwer zu bearbeiten. Sandige Zuschläge helfen.</string>
+    <string name="soil_info_humusboden">Dunkle bis schwarze Erde, die krümelig-locker ist und intensiv nach Erde riecht. Eine Handvoll fühlt sich leicht und schwammig an → Humusboden.\n\nIdeal für fast alle Kulturen. Reich an organischer Substanz.</string>
+    <string name="soil_info_loessboden">Trockene Erde zwischen den Fingern zerreiben: fühlt sie sich sehr fein und mehlig-seidig an (wie Mehl) ohne zu kleben → Lössboden.\n\nHellbraun, sehr feinkörnig, tiefgründig fruchtbar. Kann bei Starkregen verschlämmen.</string>
+    <string name="soil_info_kalkboden">Etwas Haushaltsessig auf die Erde träufeln: schäumt sie deutlich auf → Kalkboden.\n\nOft hellgrau bis beige mit weißlichen Steinchen. Alkalischer pH (über 7). Eisenmangel-empfindliche Pflanzen zeigen Chlorose.</string>
+    <string name="soil_info_moorerde">Dunkle, leichte, faserhaltige Erde die intensiv nach Torf riecht. Drücken wie einen Schwamm: gibt Wasser ab → Moorerde.\n\nSäurereich (pH 4–5), nährstoffarm. Ideal für Heidelbeeren und Rhododendron. Kommt in Niederungsgebieten vor.</string>
+    <string name="soil_info_mischboden">Erde lässt sich kurz zu einer Wurst formen, die dann leicht bricht. Weder besonders körnig noch klebrig, mittlere Wasserhaltung → Mischboden.\n\nDer häufigste Bodentyp in deutschen Hausgärten. Gute Grundlage für fast alle Kulturen.</string>
     <string name="settings_copy_plan">Plan kopieren für nächstes Jahr</string>
     <string name="settings_delete_plan">Diesen Plan löschen</string>
     <string name="settings_backup_export">Als JSON exportieren</string>
@@ -83,7 +105,7 @@
     <string name="settings_version">Version</string>
     <string name="settings_copy_year_hint">Neues Jahr eingeben</string>
     <string name="settings_copy_confirm">Kopieren</string>
-    <string name="backup_export_filename">GartenPlan_%1$d.json</string>
+    <string name="backup_export_filename">%1$s_%2$d.json</string>
     <string name="backup_import_error">Ungültige Backup-Datei</string>
     <string name="backup_import_success">Plan importiert</string>
 
@@ -103,6 +125,11 @@
     <string name="nav_plan">Plan</string>
     <string name="nav_library">Bibliothek</string>
     <string name="nav_settings">Einstellungen</string>
+
+    <!-- Validation errors -->
+    <string name="error_plant_name_required">Bitte einen Pflanzennamen eingeben</string>
+    <string name="error_section_required">Bitte eine Section auswählen</string>
+    <string name="error_section_name_required">Bitte einen Namen eingeben</string>
 
     <!-- Common -->
     <string name="action_cancel">Abbrechen</string>

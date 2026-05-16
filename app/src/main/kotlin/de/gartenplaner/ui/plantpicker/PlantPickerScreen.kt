@@ -28,16 +28,17 @@ import de.gartenplaner.ui.plantpicker.components.MiniMonthDots
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlantPickerScreen(
-    navController: NavController,
-    planId       : Int,
-    standalone   : Boolean,
+    navController : NavController,
+    planId        : Int,
+    standalone    : Boolean,
 ) {
     val vm: PlantPickerViewModel = viewModel(
-        factory = PlantPickerViewModel.Factory(LibraryRepository())
+        factory = remember { PlantPickerViewModel.Factory(LibraryRepository()) }
     )
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
+        bottomBar = { if (standalone) PlanBottomBar(navController, planId, PlanTab.LIBRARY) },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.library_title)) },
@@ -55,11 +56,6 @@ fun PlantPickerScreen(
                 },
             )
         },
-        bottomBar = {
-            if (standalone) {
-                PlanBottomBar(navController, planId, PlanTab.LIBRARY)
-            }
-        }
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding)) {
             // Suchfeld
@@ -107,11 +103,7 @@ fun PlantPickerScreen(
                     LibraryRow(
                         template = template,
                         onClick  = {
-                            // Template-ID via savedStateHandle übergeben, EditPlantScreen öffnen
-                            navController.currentBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("template_id", template.id)
-                            navController.navigate(Screen.EditPlant.route(planId))
+                            navController.navigate(Screen.EditPlant.route(planId, templateId = template.id))
                         },
                     )
                     HorizontalDivider()

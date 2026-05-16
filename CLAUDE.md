@@ -90,13 +90,13 @@ Alle Fremdschlüssel mit `CASCADE DELETE`. `planId` ist Pflicht-Argument für al
 | S2 Room | Struktur ✓ | Gradle-Wrapper-JAR → DAO-Tests grün |
 | S3 Repositories | Struktur ✓ | PlantLibraryTest grün |
 | S4 Navigation | Struktur ✓ | Alle Screens im Emulator erreichbar |
-| S5 PlanListScreen | TODO-Marker | `PlanCard`, `CreatePlanDialog` vollständig implementieren |
-| S6 EditPlantScreen | TODO-Marker | Section-Dropdown, Template-Übernahme via savedStateHandle |
-| S7 PlanScreen CRUD | TODO-Marker | Edit-Mode, Delete, Drag & Drop (ReorderableLazyColumn) |
-| S8 PlantPicker + EditSection | Struktur ✓ | Integration testen |
+| S5 PlanListScreen | ✓ abgeschlossen | — |
+| S6 EditPlantScreen | ✓ abgeschlossen | — |
+| S7 PlanScreen CRUD | ✓ abgeschlossen | — |
+| S8 PlantPicker + EditSection | ✓ abgeschlossen | — |
 | S9 SettingsScreen | TODO-Marker | Alle Dialoge (Titel, Jahr, Frost, ClimateZone, CopyPlan, DeletePlan) |
 | S10 HtmlExporter + PDF | Struktur ✓ | `MainActivity.triggerPrint()` verdrahten |
-| S11 JSON-Backup + Release | TODO-Marker | SAF-Intent, PlanExporter/Importer verdrahten, F-Droid-Metadaten |
+| S11 JSON-Backup + Release | ✓ abgeschlossen | — |
 
 ## Navigationsfluss
 
@@ -121,3 +121,4 @@ PlanListScreen (Start)
 - `IMPLEMENTATION.md` — detaillierter Sessionsplan mit Code-Beispielen
 - `gartenplaner_2026.html` — Referenz-PDF-Template (CSS-Klassen, Tabellenstruktur)
 - `GartenPlaner_Mockups.html` — UI-Mockups aller Screens (Light + Dark)
+- `Ausgabebeispiel.pdf` - Referenz Ausgabe des PDF Formats (ohne "Vorräte" abteilung)

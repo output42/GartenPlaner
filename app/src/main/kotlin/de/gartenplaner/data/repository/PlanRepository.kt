@@ -1,12 +1,16 @@
 package de.gartenplaner.data.repository
 
+import de.gartenplaner.data.backup.PlanImporter
 import de.gartenplaner.data.db.GardenDatabase
+import de.gartenplaner.data.db.PlanPlantCount
 import de.gartenplaner.data.model.MonthEntry
 import de.gartenplaner.data.model.Plan
 import de.gartenplaner.data.model.Plant
 import de.gartenplaner.data.model.Section
 import de.gartenplaner.data.model.SectionWithPlants
+import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 
 class PlanRepository(private val db: GardenDatabase) {
 
@@ -21,8 +25,23 @@ class PlanRepository(private val db: GardenDatabase) {
     fun getSectionsWithPlants(planId: Int): Flow<List<SectionWithPlants>> =
         db.sectionDao().getSectionsWithPlants(planId)
 
+    fun getUnsectionedPlants(planId: Int): Flow<List<Plant>> =
+        db.plantDao().getUnsectionedPlants(planId)
+
     fun getMonthEntries(plantId: Int): Flow<List<MonthEntry>> =
         db.monthEntryDao().getEntriesForPlant(plantId)
+
+    fun getMonthEntriesForPlan(planId: Int): Flow<List<MonthEntry>> =
+        db.monthEntryDao().getEntriesForPlan(planId)
+
+    fun getPlanPlantCounts(): Flow<List<PlanPlantCount>> =
+        db.plantDao().getPlanPlantCounts()
+
+    suspend fun getPlantById(plantId: Int): Plant? =
+        db.plantDao().getPlantById(plantId)
+
+    suspend fun getMonthEntriesOnce(plantId: Int): List<MonthEntry> =
+        db.monthEntryDao().getEntriesForPlantOnce(plantId)
 
     // ── Writes (suspend) ──────────────────────────────────────────────────────
 
@@ -37,9 +56,13 @@ class PlanRepository(private val db: GardenDatabase) {
 
     /** Ersetzt alle Monatseinträge einer Pflanze komplett (12-er Array, nulls werden ignoriert) */
     suspend fun replaceMonthEntries(plantId: Int, entries: List<MonthEntry?>) {
-        db.monthEntryDao().deleteAllForPlant(plantId)
-        val nonNull = entries.filterNotNull().map { it.copy(plantId = plantId, id = 0) }
-        db.monthEntryDao().upsertAll(nonNull)
+        val plant = db.plantDao().getPlantById(plantId) ?: return
+        db.withTransaction {
+            db.monthEntryDao().deleteAllForPlant(plantId)
+            val nonNull = entries.filterNotNull()
+                .map { it.copy(plantId = plantId, planId = plant.planId, id = 0) }
+            db.monthEntryDao().upsertAll(nonNull)
+        }
     }
 
     suspend fun deletePlan(plan: Plan) =
@@ -61,8 +84,43 @@ class PlanRepository(private val db: GardenDatabase) {
     // ── Plan kopieren (Jahreswechsel) ─────────────────────────────────────────
 
     suspend fun copyPlanForYear(sourcePlanId: Int, newYear: Int): Int {
-        val source = db.planDao().getPlanById(sourcePlanId)
-            .let { TODO("collect once — implementiert in Session 9") }
-        TODO("Session 9: Sections + Plants + MonthEntries kopieren mit neuen IDs")
+        val sourcePlan = db.planDao().getPlanById(sourcePlanId).first() ?: return -1
+
+        return db.withTransaction {
+            val newPlanId = db.planDao().upsert(
+                sourcePlan.copy(id = 0, year = newYear)
+            ).toInt()
+
+            val sectionsWithPlants = db.sectionDao().getSectionsWithPlants(sourcePlanId).first()
+            for (swp in sectionsWithPlants) {
+                val newSectionId = db.sectionDao().upsert(
+                    swp.section.copy(id = 0, planId = newPlanId)
+                ).toInt()
+                for (plant in swp.plants) {
+                    val newPlantId = db.plantDao().upsert(
+                        plant.copy(id = 0, planId = newPlanId, sectionId = newSectionId)
+                    ).toInt()
+                    val entries = db.monthEntryDao().getEntriesForPlantOnce(plant.id)
+                    db.monthEntryDao().upsertAll(
+                        entries.map { it.copy(id = 0, plantId = newPlantId, planId = newPlanId) }
+                    )
+                }
+            }
+            val unsectioned = db.plantDao().getUnsectionedPlants(sourcePlanId).first()
+            for (plant in unsectioned) {
+                val newPlantId = db.plantDao().upsert(
+                    plant.copy(id = 0, planId = newPlanId, sectionId = null)
+                ).toInt()
+                val entries = db.monthEntryDao().getEntriesForPlantOnce(plant.id)
+                db.monthEntryDao().upsertAll(
+                    entries.map { it.copy(id = 0, plantId = newPlantId, planId = newPlanId) }
+                )
+            }
+            newPlanId
+        }
     }
+
+    // ── JSON-Backup ───────────────────────────────────────────────────────────
+
+    suspend fun importPlan(json: String): Result<Int> = PlanImporter.import(json, db)
 }

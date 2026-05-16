@@ -15,6 +15,10 @@ interface MonthEntryDao {
     @Query("SELECT * FROM month_entries WHERE plant_id = :plantId ORDER BY month")
     suspend fun getEntriesForPlantOnce(plantId: Int): List<MonthEntry>
 
+    /** Alle Einträge für einen ganzen Plan — direkte plan_id-Spalte, kein JOIN mehr */
+    @Query("SELECT * FROM month_entries WHERE plan_id = :planId ORDER BY plant_id, month")
+    fun getEntriesForPlan(planId: Int): Flow<List<MonthEntry>>
+
     /** Ersetzt alle Einträge für eine Pflanze komplett */
     @Query("DELETE FROM month_entries WHERE plant_id = :plantId")
     suspend fun deleteAllForPlant(plantId: Int)

@@ -16,6 +16,7 @@ import de.gartenplaner.R
 import de.gartenplaner.data.db.GardenDatabase
 import de.gartenplaner.data.model.Section
 import de.gartenplaner.data.repository.PlanRepository
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,16 +31,16 @@ fun EditSectionScreen(
     val scope   = rememberCoroutineScope()
 
     var title by remember { mutableStateOf("") }
+    var showError by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
 
     // Lade vorhandenen Titel wenn wir umbenennen
     LaunchedEffect(sectionId) {
         if (sectionId != null) {
             repo.getSectionsWithPlants(planId)
-                .collect { sections ->
-                    sections.firstOrNull { it.section.id == sectionId }
-                        ?.section?.title?.let { title = it }
-                }
+                .first()
+                .firstOrNull { it.section.id == sectionId }
+                ?.section?.title?.let { title = it }
         }
         focusRequester.requestFocus()
     }
@@ -67,14 +68,17 @@ fun EditSectionScreen(
                 actions = {
                     TextButton(
                         onClick = {
-                            scope.launch {
-                                repo.upsertSection(
-                                    Section(id = sectionId ?: 0, planId = planId, title = title.trim())
-                                )
-                                navController.popBackStack()
+                            if (title.isBlank()) {
+                                showError = true
+                            } else {
+                                scope.launch {
+                                    repo.upsertSection(
+                                        Section(id = sectionId ?: 0, planId = planId, title = title.trim())
+                                    )
+                                    navController.popBackStack()
+                                }
                             }
                         },
-                        enabled = title.isNotBlank(),
                     ) {
                         Text(stringResource(R.string.action_save), color = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -95,13 +99,22 @@ fun EditSectionScreen(
             )
             OutlinedTextField(
                 value         = title,
-                onValueChange = { title = it },
+                onValueChange = { title = it; showError = false },
                 placeholder   = { Text(stringResource(R.string.section_name_hint)) },
                 singleLine    = true,
+                isError       = showError,
                 modifier      = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
             )
+            if (showError) {
+                Text(
+                    text     = stringResource(R.string.error_section_name_required),
+                    color    = MaterialTheme.colorScheme.error,
+                    style    = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
+            }
         }
     }
 }

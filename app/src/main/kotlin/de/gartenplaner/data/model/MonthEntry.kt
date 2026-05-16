@@ -16,7 +16,7 @@ import androidx.room.PrimaryKey
             onDelete      = ForeignKey.CASCADE,
         )
     ],
-    indices = [Index("plant_id")],
+    indices = [Index("plant_id"), Index("plan_id")],
 )
 data class MonthEntry(
     @PrimaryKey(autoGenerate = true)
@@ -24,6 +24,9 @@ data class MonthEntry(
 
     @ColumnInfo(name = "plant_id")
     val plantId: Int,
+
+    @ColumnInfo(name = "plan_id")
+    val planId: Int = 0,
 
     /** 0 = Januar … 11 = Dezember */
     val month: Int,

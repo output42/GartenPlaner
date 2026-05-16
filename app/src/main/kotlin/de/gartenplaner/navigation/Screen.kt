@@ -24,12 +24,18 @@ sealed class Screen(val route: String) {
     }
 
     /** Pushed: Pflanze anlegen/bearbeiten */
-    data object EditPlant : Screen("edit_plant/{planId}?plantId={plantId}") {
-        fun route(planId: Int, plantId: Int? = null) =
-            if (plantId != null) "edit_plant/$planId?plantId=$plantId"
-            else "edit_plant/$planId"
-        const val ARG_PLAN_ID  = "planId"
-        const val ARG_PLANT_ID = "plantId"
+    data object EditPlant : Screen("edit_plant/{planId}?plantId={plantId}&templateId={templateId}") {
+        fun route(planId: Int, plantId: Int? = null, templateId: Int? = null) = buildString {
+            append("edit_plant/$planId")
+            val params = listOfNotNull(
+                plantId?.let { "plantId=$it" },
+                templateId?.let { "templateId=$it" },
+            )
+            if (params.isNotEmpty()) append("?${params.joinToString("&")}")
+        }
+        const val ARG_PLAN_ID     = "planId"
+        const val ARG_PLANT_ID    = "plantId"
+        const val ARG_TEMPLATE_ID = "templateId"
     }
 
     /** Pushed: Bibliothek als Sub-Screen von PlanScreen */

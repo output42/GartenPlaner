@@ -6,8 +6,11 @@ import androidx.lifecycle.viewModelScope
 import de.gartenplaner.data.model.MonthEntry
 import de.gartenplaner.data.model.Plan
 import de.gartenplaner.data.model.Plant
+import de.gartenplaner.data.model.Section
 import de.gartenplaner.data.model.SectionWithPlants
 import de.gartenplaner.data.repository.PlanRepository
+import de.gartenplaner.navigation.Screen
+import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -15,11 +18,10 @@ sealed interface PlanUiState {
     data object Loading : PlanUiState
     data object Empty   : PlanUiState
     data class  Success(
-        val plan          : Plan,
-        val sections      : List<SectionWithPlants>,
-        /** plantId → sortierte Monatsliste */
-        val monthEntries  : Map<Int, List<MonthEntry>>,
-        val editMode      : Boolean = false,
+        val plan              : Plan,
+        val sections          : List<SectionWithPlants>,
+        val unsectionedPlants : List<Plant>,
+        val monthEntries      : Map<Int, List<MonthEntry>>,
     ) : PlanUiState
 }
 
@@ -38,34 +40,77 @@ class PlanViewModel(
     private val planId: Int,
 ) : ViewModel() {
 
-    private val _events = MutableSharedFlow<PlanEvent>()
+    private val _events = MutableSharedFlow<PlanEvent>(extraBufferCapacity = 1)
     val events: SharedFlow<PlanEvent> = _events.asSharedFlow()
 
-    val uiState: StateFlow<PlanUiState> = repo.getSectionsWithPlants(planId)
-        .combine(repo.getPlanById(planId)) { sections, plan ->
-            if (plan == null) return@combine PlanUiState.Empty
-            // MonthEntries werden pro Pflanze separat geladen — TODO Session 5
-            PlanUiState.Success(plan = plan, sections = sections, monthEntries = emptyMap())
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PlanUiState.Loading)
+    private val _editMode = MutableStateFlow(false)
+    val editMode: StateFlow<Boolean> = _editMode.asStateFlow()
+
+    val uiState: StateFlow<PlanUiState> = flow {
+        uiStateCache[planId]?.let { emit(it) }
+        emitAll(
+            combine(
+                repo.getSectionsWithPlants(planId),
+                repo.getPlanById(planId),
+                repo.getMonthEntriesForPlan(planId),
+                repo.getUnsectionedPlants(planId),
+            ) { sections, plan, entries, unsectioned ->
+                if (plan == null) {
+                    PlanUiState.Empty
+                } else {
+                    PlanUiState.Success(
+                        plan              = plan,
+                        sections          = sections.map { sw ->
+                            sw.copy(plants = sw.plants.sortedBy { it.order })
+                        },
+                        unsectionedPlants = unsectioned.sortedBy { it.order },
+                        monthEntries      = entries.groupBy { it.plantId },
+                    )
+                }
+            }
+        )
+    }
+    .onEach { uiStateCache[planId] = it }
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PlanUiState.Loading)
+
+    private val undoStack = ArrayDeque<Pair<Plant, List<MonthEntry>>>()
 
     fun toggleEditMode() {
-        val current = (uiState.value as? PlanUiState.Success) ?: return
-        // TODO Session 7: editMode toggling
+        _editMode.value = !_editMode.value
     }
 
     fun deletePlant(plant: Plant) {
+        val currentEntries = (uiState.value as? PlanUiState.Success)
+            ?.monthEntries?.get(plant.id) ?: emptyList()
+        undoStack.addLast(plant to currentEntries)
         viewModelScope.launch {
             repo.deletePlant(plant)
-            _events.emit(PlanEvent.ShowSnackbar(
-                message     = "Pflanze gelöscht",
-                actionLabel = "Rückgängig",
-            ))
+            _events.emit(PlanEvent.ShowSnackbar("Pflanze gelöscht", "Rückgängig"))
+        }
+    }
+
+    fun undoDeletePlant() {
+        val (plant, entries) = undoStack.removeLastOrNull() ?: return
+        viewModelScope.launch {
+            val newId = repo.upsertPlant(plant.copy(id = 0))
+            repo.replaceMonthEntries(newId, entries)
+        }
+    }
+
+    fun deleteSection(section: Section) {
+        viewModelScope.launch {
+            repo.deleteSection(section)
         }
     }
 
     fun reorderPlants(plants: List<Plant>) {
         viewModelScope.launch { repo.reorderPlants(plants) }
+    }
+
+    fun navigateToEditPlant(plantId: Int) {
+        viewModelScope.launch {
+            _events.emit(PlanEvent.NavigateTo(Screen.EditPlant.route(planId, plantId)))
+        }
     }
 
     fun triggerPrint() {
@@ -79,5 +124,13 @@ class PlanViewModel(
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
             PlanViewModel(repo, planId) as T
+    }
+
+    companion object {
+        private val uiStateCache = ConcurrentHashMap<Int, PlanUiState>()
+
+        internal fun setCache(planId: Int, state: PlanUiState) {
+            uiStateCache[planId] = state
+        }
     }
 }

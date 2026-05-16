@@ -10,26 +10,35 @@ import androidx.room.PrimaryKey
     tableName = "plants",
     foreignKeys = [
         ForeignKey(
+            entity        = Plan::class,
+            parentColumns = ["id"],
+            childColumns  = ["plan_id"],
+            onDelete      = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
             entity        = Section::class,
             parentColumns = ["id"],
             childColumns  = ["section_id"],
-            onDelete      = ForeignKey.CASCADE,
-        )
+            onDelete      = ForeignKey.SET_NULL,
+        ),
     ],
-    indices = [Index("section_id")],
+    indices = [Index("plan_id"), Index("section_id")],
 )
 data class Plant(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
+    @ColumnInfo(name = "plan_id")
+    val planId: Int,
+
     @ColumnInfo(name = "section_id")
-    val sectionId: Int,
+    val sectionId: Int?,
 
     val name: String,
 
     val subtitle: String = "",
 
-    /** Reihenfolge innerhalb der Section (0-basiert) */
+    /** Reihenfolge innerhalb der Section bzw. Plan (0-basiert) */
     val order: Int = 0,
 
     /** true = aus Pflanzenbibliothek übernommen, false = manuell angelegt */
