@@ -3,137 +3,137 @@
     <string name="app_name">GartenPlaner</string>
 
     <!-- PlanListScreen -->
-    <string name="plan_list_title">Meine Gartenpläne</string>
-    <string name="plan_list_empty_title">Noch kein Gartenplan</string>
-    <string name="plan_list_empty_body">Tippe auf + um deinen ersten Plan zu starten.</string>
-    <string name="plan_create_new">Neuen Plan anlegen</string>
-    <string name="plan_year_label">Planjahr</string>
-    <string name="plan_title_label">Titel</string>
-    <string name="plan_delete_confirm">Plan und alle Pflanzen unwiderruflich löschen?</string>
-    <string name="plan_title_default">Mein Garten</string>
-    <string name="plan_title_hint">z. B. Mein Garten</string>
-    <string name="plan_year_invalid">Ungültiges Jahr</string>
+    <string name="plan_list_title">My Garden Plans</string>
+    <string name="plan_list_empty_title">No garden plan yet</string>
+    <string name="plan_list_empty_body">Tap + to start your first plan.</string>
+    <string name="plan_create_new">Create new plan</string>
+    <string name="plan_year_label">Plan year</string>
+    <string name="plan_title_label">Title</string>
+    <string name="plan_delete_confirm">Permanently delete plan and all plants?</string>
+    <string name="plan_title_default">My Garden</string>
+    <string name="plan_title_hint">e.g. My Garden</string>
+    <string name="plan_year_invalid">Invalid year</string>
     <plurals name="plant_count">
-        <item quantity="one">1 Pflanze</item>
-        <item quantity="other">%d Pflanzen</item>
+        <item quantity="one">1 plant</item>
+        <item quantity="other">%d plants</item>
     </plurals>
 
     <!-- PlanScreen -->
-    <string name="plan_empty_sections_title">Keine Sections</string>
-    <string name="plan_empty_sections_body">Füge eine Section hinzu, z. B. „🥬 Gemüse &amp; Kräuter".</string>
-    <string name="plan_add_from_library">Aus Bibliothek wählen</string>
-    <string name="plan_add_manual">Manuell anlegen</string>
-    <string name="plan_add_section">Section hinzufügen</string>
-    <string name="plan_edit_mode">Bearbeiten</string>
-    <string name="plan_done">Fertig</string>
-    <string name="plan_print">Drucken / PDF</string>
-    <string name="plan_delete_section_confirm">Section und alle Pflanzen löschen?</string>
-    <string name="plan_plant_deleted">Pflanze gelöscht</string>
-    <string name="action_undo">Rückgängig</string>
+    <string name="plan_empty_sections_title">No sections</string>
+    <string name="plan_empty_sections_body">Add a section, e.g. "🥬 Vegetables &amp; Herbs".</string>
+    <string name="plan_add_from_library">Choose from library</string>
+    <string name="plan_add_manual">Add manually</string>
+    <string name="plan_add_section">Add section</string>
+    <string name="plan_edit_mode">Edit</string>
+    <string name="plan_done">Done</string>
+    <string name="plan_print">Print / PDF</string>
+    <string name="plan_delete_section_confirm">Delete section and all its plants?</string>
+    <string name="plan_plant_deleted">Plant deleted</string>
+    <string name="action_undo">Undo</string>
 
     <!-- EditPlantScreen -->
-    <string name="edit_plant_title_new">Neue Pflanze</string>
-    <string name="edit_plant_title_edit">Pflanze bearbeiten</string>
-    <string name="plant_name_label">Pflanzname</string>
-    <string name="plant_subtitle_label">Untertitel (optional)</string>
+    <string name="edit_plant_title_new">New plant</string>
+    <string name="edit_plant_title_edit">Edit plant</string>
+    <string name="plant_name_label">Plant name</string>
+    <string name="plant_subtitle_label">Subtitle (optional)</string>
     <string name="plant_section_label">Section</string>
-    <string name="plant_months_label">Aktivitäten pro Monat</string>
-    <string name="plant_month_hint">Tippe auf einen Monat um eine Aktivität festzulegen.</string>
-    <string name="action_save">Speichern</string>
+    <string name="plant_months_label">Activities per month</string>
+    <string name="plant_month_hint">Tap a month to set an activity.</string>
+    <string name="action_save">Save</string>
 
     <!-- ActivityTypeSheet -->
-    <string name="month_sheet_empty_option">Leer / nichts</string>
-    <string name="month_sheet_confirm">Übernehmen</string>
-    <string name="month_sheet_note_label">Was wird gepflegt?</string>
-    <string name="month_sheet_note_hint">z. B. Gießen, Düngen, Schneiden …</string>
+    <string name="month_sheet_empty_option">Empty / none</string>
+    <string name="month_sheet_confirm">Apply</string>
+    <string name="month_sheet_note_label">What care is needed?</string>
+    <string name="month_sheet_note_hint">e.g. Watering, fertilising, pruning …</string>
 
     <!-- ActivityType labels -->
-    <string name="activity_voranzucht">Voranzucht</string>
-    <string name="activity_direktsaat">Direktsaat</string>
-    <string name="activity_auspflanzen">Auspflanzen</string>
-    <string name="activity_ernte">Ernte</string>
-    <string name="activity_pflege">Pflege</string>
+    <string name="activity_voranzucht">Indoor sowing</string>
+    <string name="activity_direktsaat">Direct sowing</string>
+    <string name="activity_auspflanzen">Transplanting</string>
+    <string name="activity_ernte">Harvest</string>
+    <string name="activity_pflege">Care</string>
 
     <!-- PlantPickerScreen -->
-    <string name="library_title">Pflanzenbibliothek</string>
-    <string name="library_search_hint">Pflanze suchen …</string>
-    <string name="library_filter_all">Alle</string>
-    <string name="library_empty">Keine Treffer</string>
+    <string name="library_title">Plant library</string>
+    <string name="library_search_hint">Search plants …</string>
+    <string name="library_filter_all">All</string>
+    <string name="library_empty">No results</string>
 
     <!-- EditSectionScreen -->
-    <string name="plant_section_none">Kein Bereich</string>
-    <string name="edit_section_title_new">Neuer Bereich</string>
-    <string name="edit_section_title_edit">Bereich umbenennen</string>
-    <string name="section_add">Bereich hinzufügen</string>
-    <string name="section_name_label">Name (Emoji erlaubt)</string>
-    <string name="section_name_hint">z. B. 🥬 Gemüse &amp; Kräuter</string>
+    <string name="plant_section_none">No section</string>
+    <string name="edit_section_title_new">New section</string>
+    <string name="edit_section_title_edit">Rename section</string>
+    <string name="section_add">Add section</string>
+    <string name="section_name_label">Name (emoji allowed)</string>
+    <string name="section_name_hint">e.g. 🥬 Vegetables &amp; Herbs</string>
 
     <!-- SettingsScreen -->
-    <string name="settings_title">Einstellungen</string>
-    <string name="settings_group_plan">Dieser Plan</string>
-    <string name="settings_group_climate">Klima &amp; Standort</string>
-    <string name="settings_group_management">Planverwaltung</string>
-    <string name="settings_group_backup">Datensicherung</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_group_plan">This plan</string>
+    <string name="settings_group_climate">Climate &amp; location</string>
+    <string name="settings_group_management">Plan management</string>
+    <string name="settings_group_backup">Backup</string>
     <string name="settings_group_export">Export</string>
     <string name="settings_group_app">App</string>
-    <string name="settings_plan_title">Plan-Titel</string>
-    <string name="settings_plan_year">Planjahr</string>
-    <string name="settings_frost_last">Letzter Spätfrost</string>
-    <string name="settings_frost_first">Erster Herbstfrost</string>
-    <string name="settings_climate_zone">Klimazone / Boden</string>
+    <string name="settings_plan_title">Plan title</string>
+    <string name="settings_plan_year">Plan year</string>
+    <string name="settings_frost_last">Last spring frost</string>
+    <string name="settings_frost_first">First autumn frost</string>
+    <string name="settings_climate_zone">Climate zone / soil</string>
     <string name="settings_climate_zone_optional">(optional)</string>
-    <string name="settings_climate_dialog_title">Klimazone &amp; Bodenart</string>
-    <string name="settings_climate_zone_header">Klimazone</string>
-    <string name="settings_climate_estimate">Standort-Vorschlag: %1$s</string>
-    <string name="action_apply">Übernehmen</string>
-    <string name="settings_soil_type_header">Bodenart</string>
-    <string name="soil_info_title">Boden selbst bestimmen</string>
-    <string name="soil_info_lehmboden">Feuchte Erde zu einer dünnen Wurst formen: hält sie ohne zu reißen und fühlt sich glatt-plastisch an → Lehmboden.\n\nNährstoffreich, wasserhaltend, ideal für die meisten Gemüsearten. Kompaktiert bei zu frühem Bearbeiten.</string>
-    <string name="soil_info_sandboden">Feuchte Erde zusammendrücken und loslassen: zerfällt sie sofort, fühlt sich körnig-rau an und rieselt durch die Finger → Sandboden.\n\nErwärmt sich schnell im Frühjahr, trocknet aber rasch aus. Regelmäßig kompostieren und mulchen.</string>
-    <string name="soil_info_tonboden">Erde zu einer langen, dünnen Wurst formen: klappt sie problemlos, klebt stark und glänzt beim Reiben → Tonboden.\n\nNährstoffreich, neigt aber zur Staunässe und ist schwer zu bearbeiten. Sandige Zuschläge helfen.</string>
-    <string name="soil_info_humusboden">Dunkle bis schwarze Erde, die krümelig-locker ist und intensiv nach Erde riecht. Eine Handvoll fühlt sich leicht und schwammig an → Humusboden.\n\nIdeal für fast alle Kulturen. Reich an organischer Substanz.</string>
-    <string name="soil_info_loessboden">Trockene Erde zwischen den Fingern zerreiben: fühlt sie sich sehr fein und mehlig-seidig an (wie Mehl) ohne zu kleben → Lössboden.\n\nHellbraun, sehr feinkörnig, tiefgründig fruchtbar. Kann bei Starkregen verschlämmen.</string>
-    <string name="soil_info_kalkboden">Etwas Haushaltsessig auf die Erde träufeln: schäumt sie deutlich auf → Kalkboden.\n\nOft hellgrau bis beige mit weißlichen Steinchen. Alkalischer pH (über 7). Eisenmangel-empfindliche Pflanzen zeigen Chlorose.</string>
-    <string name="soil_info_moorerde">Dunkle, leichte, faserhaltige Erde die intensiv nach Torf riecht. Drücken wie einen Schwamm: gibt Wasser ab → Moorerde.\n\nSäurereich (pH 4–5), nährstoffarm. Ideal für Heidelbeeren und Rhododendron. Kommt in Niederungsgebieten vor.</string>
-    <string name="soil_info_mischboden">Erde lässt sich kurz zu einer Wurst formen, die dann leicht bricht. Weder besonders körnig noch klebrig, mittlere Wasserhaltung → Mischboden.\n\nDer häufigste Bodentyp in deutschen Hausgärten. Gute Grundlage für fast alle Kulturen.</string>
-    <string name="settings_copy_plan">Plan kopieren für nächstes Jahr</string>
-    <string name="settings_delete_plan">Diesen Plan löschen</string>
-    <string name="settings_backup_export">Als JSON exportieren</string>
-    <string name="settings_backup_import">Aus JSON importieren</string>
-    <string name="settings_print">Plan drucken / Als PDF</string>
-    <string name="settings_print_format">A4 Querformat</string>
+    <string name="settings_climate_dialog_title">Climate zone &amp; soil type</string>
+    <string name="settings_climate_zone_header">Climate zone</string>
+    <string name="settings_climate_estimate">Location suggestion: %1$s</string>
+    <string name="action_apply">Apply</string>
+    <string name="settings_soil_type_header">Soil type</string>
+    <string name="soil_info_title">Identify your soil</string>
+    <string name="soil_info_lehmboden">Roll moist soil into a thin sausage shape: if it holds without cracking and feels smooth and plastic → Loam soil.\n\nNutrient-rich, moisture-retaining, ideal for most vegetables. Compacts if worked too early in spring.</string>
+    <string name="soil_info_sandboden">Squeeze moist soil and release: if it crumbles immediately, feels gritty and falls through your fingers → Sandy soil.\n\nWarms up quickly in spring but dries out fast. Add compost regularly and use mulch.</string>
+    <string name="soil_info_tonboden">Roll soil into a long, thin sausage: if it works easily, feels very sticky and shines when rubbed → Clay soil.\n\nNutrient-rich but prone to waterlogging and hard to work. Adding sand improves structure.</string>
+    <string name="soil_info_humusboden">Dark to black soil that is crumbly and loose with an intense earthy smell. A handful feels light and spongy → Humus soil.\n\nIdeal for almost all crops. Rich in organic matter.</string>
+    <string name="soil_info_loessboden">Rub dry soil between your fingers: if it feels very fine and silky-floury (like flour) without sticking → Loess soil.\n\nLight brown, very fine-grained, deeply fertile. Can crust over during heavy rain.</string>
+    <string name="soil_info_kalkboden">Drip a little household vinegar on the soil: if it fizzes noticeably → Calcareous soil.\n\nOften light grey to beige with whitish stones. Alkaline pH (above 7). Plants sensitive to iron deficiency may show chlorosis.</string>
+    <string name="soil_info_moorerde">Dark, light, fibrous soil with a strong peat smell. Squeeze it like a sponge: it releases water → Peat soil.\n\nAcidic (pH 4–5), low in nutrients. Ideal for blueberries and rhododendrons. Found in lowland areas.</string>
+    <string name="soil_info_mischboden">Soil can briefly be rolled into a sausage that then breaks apart easily. Neither particularly gritty nor sticky, medium water retention → Mixed soil.\n\nThe most common soil type in home gardens. A good basis for almost all crops.</string>
+    <string name="settings_copy_plan">Copy plan for next year</string>
+    <string name="settings_delete_plan">Delete this plan</string>
+    <string name="settings_backup_export">Export as JSON</string>
+    <string name="settings_backup_import">Import from JSON</string>
+    <string name="settings_print">Print / Save as PDF</string>
+    <string name="settings_print_format">A4 landscape</string>
     <string name="settings_version">Version</string>
-    <string name="settings_copy_year_hint">Neues Jahr eingeben</string>
-    <string name="settings_copy_confirm">Kopieren</string>
+    <string name="settings_copy_year_hint">Enter new year</string>
+    <string name="settings_copy_confirm">Copy</string>
     <string name="backup_export_filename">%1$s_%2$d.json</string>
-    <string name="backup_import_error">Ungültige Backup-Datei</string>
-    <string name="backup_import_success">Plan importiert</string>
+    <string name="backup_import_error">Invalid backup file</string>
+    <string name="backup_import_success">Plan imported</string>
 
     <!-- Month names -->
     <string-array name="months_short">
-        <item>Jan</item><item>Feb</item><item>Mär</item><item>Apr</item>
-        <item>Mai</item><item>Jun</item><item>Jul</item><item>Aug</item>
-        <item>Sep</item><item>Okt</item><item>Nov</item><item>Dez</item>
+        <item>Jan</item><item>Feb</item><item>Mar</item><item>Apr</item>
+        <item>May</item><item>Jun</item><item>Jul</item><item>Aug</item>
+        <item>Sep</item><item>Oct</item><item>Nov</item><item>Dec</item>
     </string-array>
     <string-array name="months_long">
-        <item>Januar</item><item>Februar</item><item>März</item><item>April</item>
-        <item>Mai</item><item>Juni</item><item>Juli</item><item>August</item>
-        <item>September</item><item>Oktober</item><item>November</item><item>Dezember</item>
+        <item>January</item><item>February</item><item>March</item><item>April</item>
+        <item>May</item><item>June</item><item>July</item><item>August</item>
+        <item>September</item><item>October</item><item>November</item><item>December</item>
     </string-array>
 
     <!-- Navigation tabs -->
     <string name="nav_plan">Plan</string>
-    <string name="nav_library">Bibliothek</string>
-    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_library">Library</string>
+    <string name="nav_settings">Settings</string>
 
     <!-- Validation errors -->
-    <string name="error_plant_name_required">Bitte einen Pflanzennamen eingeben</string>
-    <string name="error_section_required">Bitte eine Section auswählen</string>
-    <string name="error_section_name_required">Bitte einen Namen eingeben</string>
+    <string name="error_plant_name_required">Please enter a plant name</string>
+    <string name="error_section_required">Please select a section</string>
+    <string name="error_section_name_required">Please enter a name</string>
 
     <!-- Common -->
-    <string name="action_cancel">Abbrechen</string>
-    <string name="action_delete">Löschen</string>
-    <string name="action_confirm">Bestätigen</string>
-    <string name="action_back">Zurück</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_back">Back</string>
 </resources>
