@@ -33,8 +33,6 @@ import de.gartenplaner.data.model.Section
 import de.gartenplaner.data.model.SectionWithPlants
 import de.gartenplaner.data.repository.PlanRepository
 import de.gartenplaner.navigation.Screen
-import de.gartenplaner.ui.components.PlanBottomBar
-import de.gartenplaner.ui.components.PlanTab
 import de.gartenplaner.ui.plan.components.MonthChipRow
 import de.gartenplaner.ui.plan.components.SectionHeader
 
@@ -140,7 +138,7 @@ fun PlanScreen(navController: NavController, planId: Int) {
     }
 
     Scaffold(
-        bottomBar = { PlanBottomBar(navController, planId, PlanTab.PLAN) },
+        contentWindowInsets = WindowInsets(0),
         topBar = {
             TopAppBar(
                 title = {

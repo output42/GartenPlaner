@@ -34,8 +34,6 @@ import de.gartenplaner.data.db.GardenDatabase
 import de.gartenplaner.data.repository.PlanRepository
 import de.gartenplaner.MainActivity
 import de.gartenplaner.navigation.Screen
-import de.gartenplaner.ui.components.PlanBottomBar
-import de.gartenplaner.ui.components.PlanTab
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -114,7 +112,7 @@ fun SettingsScreen(navController: NavController, planId: Int) {
     var showDeletePlanDialog by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
-        bottomBar = { PlanBottomBar(navController, planId, PlanTab.SETTINGS) },
+        contentWindowInsets = WindowInsets(0),
         topBar = {
             TopAppBar(
                 title  = { Text(stringResource(R.string.settings_title)) },

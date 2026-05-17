@@ -27,7 +27,10 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import de.gartenplaner.ui.components.PlanBottomBar
+import de.gartenplaner.ui.components.PlanTab
 import de.gartenplaner.data.db.GardenDatabase
 import de.gartenplaner.data.repository.PlanRepository
 import de.gartenplaner.navigation.Screen
@@ -78,10 +81,28 @@ class MainActivity : ComponentActivity() {
                 }
 
                 val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+                val currentTab: PlanTab? = when {
+                    currentRoute?.startsWith("plan/") == true     -> PlanTab.PLAN
+                    currentRoute?.startsWith("library/") == true  -> PlanTab.LIBRARY
+                    currentRoute?.startsWith("settings/") == true -> PlanTab.SETTINGS
+                    else -> null
+                }
+                val currentPlanId: Int? = navBackStackEntry?.arguments?.getString("planId")?.toIntOrNull()
 
-                // Scaffold ohne bottomBar — jeder Screen bringt seine eigene BottomBar mit.
-                // Dadurch ändert sich die NavHost-Höhe nie während einer Animation.
-                Scaffold(contentWindowInsets = WindowInsets(0)) { innerPadding ->
+                // BottomBar lebt außerhalb des NavHost → sie bewegt sich nie während Tab-Transitionen.
+                // Der M3-Indikator animiert intern wenn sich `current` ändert.
+                Scaffold(
+                    contentWindowInsets = WindowInsets(0),
+                    bottomBar = {
+                        val tab = currentTab
+                        val pid = currentPlanId
+                        if (tab != null && pid != null) {
+                            PlanBottomBar(navController, pid, tab)
+                        }
+                    },
+                ) { innerPadding ->
                     NavHost(
                         navController    = navController,
                         startDestination = Screen.PlanList.route,
